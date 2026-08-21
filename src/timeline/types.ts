@@ -1,5 +1,6 @@
 /** 타임라인 빌더 출력: 레이어/컴포즈에 전달 */
 export type TimelineResult = {
+  openingBoardEndAbsS: number;
   timelineOffset: number;
   maxTotalTimeWithEntryExit: number;
   firstArrivals: Map<
@@ -43,6 +44,7 @@ export type TimelineResult = {
     dropArriveAbsS: number;
     incomingSpawnAbsS: number;
     incomingReadyAbsS: number;
+    incomingMoveAbsS: number;
     addedDelay: number;
   }[];
   flock: {
@@ -52,11 +54,14 @@ export type TimelineResult = {
     sheep: {
       rosterIndex: number;
       slotIndex: number;
+      spawnCell: [number, number];
       inboundAbsS: number | null;
       spawnAbsS: number;
       pickupAbsS: number | null;
       hiddenAbsS: number | null;
-      bites: { atS: number; progress: number; level: number }[];
+      capacity: number;
+      appetite: "high" | "normal" | "low";
+      bites: { cell: string; atS: number; progress: number; level: number }[];
     }[];
     grassProgress: { atS: number; progress: number }[];
   };

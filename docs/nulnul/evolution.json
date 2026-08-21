@@ -3,16 +3,19 @@
   "personal_evolution_home": null,
   "checkpoint": {
     "goal": "Make the animated contribution pasture feel cohesive, premium, and clearly readable in a GitHub profile README.",
-    "milestone": "The accepted v30 champion removes the first offstage slide and hides the UFO body through every deployment and turnover jump while preserving exact-drop flashes and sheep reveals.",
+    "milestone": "Local v59 keeps the accepted eight-pen inventory, relaxes the exact-field camera to 1.30x, prefers unique three-to-four-edge work routes, and lets full outgoing sheep finish their recorded cleared pickup approach instead of freezing at the last bite.",
     "completion_check": "npm run check",
     "status": "active",
-    "last_verified": "2026-08-18: npm run check and npm run visual:fixture pass with a 1,229,601-byte, 48.581-second deterministic fixture, and a fresh independent Gate scored v30 20/20 with no blocker. The first UFO remains absent until its exact-drop flash; opening deployments 2–6 hide through 0.052-second jumps; sheep 3 and 4 reveal only at exact drops; and all 22 turnovers hide through 0.104 seconds with pre-jump INBOUND 0/20, destination light, clean white replacements, stopped holds, and cleared bridges. All 201 arrivals, exact 0.312-second bridge edges, serialized stops, early final pickup, 10/28/62 rosters, themes, reduced motion, terminal state, and 53 finale phases remain green. Feature 8ea8215 and workflow 32086601719 published project asset 6f8af55, profile asset f4e30db, profile embed 0094973, and profile prose 32ef11e. Project/profile theme assets match byte-for-byte; the public 10-member dark SVG is 583,478 bytes, lasts 35.204 seconds, and contains six INBOUND handoffs.",
-    "next_action": "Keep accepted and published v30 stable pending new user feedback; use adjacent first-entry and deployment frames before changing the flash-jump grammar.",
+    "last_verified": "2026-08-21: local v59 passes npm run visual:fixture, npm run check, and git diff --check with a 2,141,551-byte, 63.736-second fixture. The 190×40 exact-field camera uses 1.30x, exposing 11.5% more source width than v58 while retaining the exact pasture and actor tracks. Unique reachable grass destinations and a restrained three-to-four-edge route preference raise comparable 30fps average root-moving sheep from 1.84 to 2.43 and cut frames with at least four fully still sheep from 164 to 27. Full outgoing sheep use the recorded cleared approach through the final pre-work cell before exact pickup; three adjacent pickup sequences show no fake idle movement. Native 700px dark/light, 350px, and reduced-motion frames remain clear. Fresh 30fps/120fps field↔camera probes report zero jumps or mismatches, while inventory probes retain a maximum of eight actors with zero failures. A fresh independent Gate scored 19/20 with no blocker; pacing remains 3/4 because of total runtime. The candidate remains local and unpushed.",
+    "next_action": "Resume by opening dist/visual-fixture.svg and inspecting local v59 at the 1.30x live camera plus the first, second, and late pickup approaches. Keep it unpushed; make no further change unless user playback exposes a named discontinuity.",
     "blockers": [],
     "approved_permissions": [
       "Read and write files inside this repository",
       "Run local build, TypeScript, and credential-free SVG fixture commands",
-      "Write project research pages to the user-designated Obsidian vault"
+      "Write project research pages to the user-designated Obsidian vault",
+      "Vendor the explicitly requested OFL Galmuri7 font from its pinned official source",
+      "Push the explicitly approved v36 source commit to the project main branch",
+      "Push the Gate-accepted v42 source commit to the project main branch as explicitly requested by the user"
     ]
   },
   "agents": {
@@ -23,10 +26,10 @@
       "last_promotion_id": null
     },
     "worker": {
-      "version": 30,
+      "version": 50,
       "job": "Implement one bounded motion or rendering change and report its mechanical and visual evidence.",
       "profile_path": "AGENTS.md",
-      "last_promotion_id": "promotion-unified-hidden-flash-jump-v30-20260818"
+      "last_promotion_id": "promotion-waiting-inventory-appetite-v50-20260820"
     },
     "coach": {
       "version": 2,
@@ -38,10 +41,34 @@
       "version": 1,
       "job": "Independently compare a candidate with the frozen fixture, mechanical checks, permissions, and rollback guardrails.",
       "profile_path": "docs/nulnul/visual-benchmark.md",
-      "last_promotion_id": null
+      "last_promotion_id": "promotion-waiting-inventory-appetite-v50-20260820"
     }
   },
   "feedback": [
+    {
+      "id": "feedback-inventory-dock-queue-v50-20260820",
+      "target_agent": "worker",
+      "source": "user",
+      "observed": "The v50 panel replayed the collected full sheep beside the waiting inventory, making the dock look cramped or broken, and both opening refill and turnover shifts visibly pulled an extra sheep from beyond the six-pen grid.",
+      "expected": "Keep collected energy on the accepted field pickup and finale path, leave clear space around the panel UFO, and animate only sheep already inside the six fixed pens; reveal the next hidden sheep only after the adjacent shift reaches the last pen.",
+      "evidence": "Native and 3x adjacent frames reproduced a second collected-sheep actor beneath the panel UFO and source tracing found slot 6 actors in both opening and turnover motion groups outside the six visible pens.",
+      "reproduction": "Inspect native and 3x opening refill plus first and late turnover frames. Reject a collected sheep beside the inventory, a boxed or overlapping dock, any inventory actor with a source slot outside 0..5, or a pending sheep sliding in across the right grid edge.",
+      "scope": "project",
+      "status": "converted",
+      "rejected_proposals": []
+    },
+    {
+      "id": "feedback-waiting-inventory-appetite-v50-20260819",
+      "target_agent": "worker",
+      "source": "user",
+      "observed": "Remote turnover did not communicate that a different sheep had boarded and deployed, while the first inventory attempt looked like a lagging roster, re-added collected sheep, and treated fixed absolute commit counts as appetite thresholds that would disadvantage casual users.",
+      "expected": "Use six small pens as a waiting inventory only: preserve opening dispatch holes before a group refill, show the UFO load the front sheep, hold one empty pen before an adjacent shift, decrease the count to zero, and drop replacements at their first real work cell. Derive appetite from each user's own active-week distribution; start all sheep at the same size and make a full high-appetite sheep about 20% larger than a full low-appetite sheep.",
+      "evidence": "The user explicitly approved the recommended relative-activity and growth model, clarified that collected sheep must not remain in inventory, requested visible 4/6 opening gaps plus queue movement, and prohibited pushing before inspection.",
+      "reproduction": "At native 700px inspect dark/light opening dispatch, group refill, adjacent first two and late turnovers, high/low initial and full growth, sparse/dense variants, reduced motion, and terminal. Reject a roster-like arrangement, returned sheep in waiting pens, non-monotonic count, missing empty-pen hold, random or absolute activity thresholds, unequal initial size, a mature high/low ratio far from 1.20, artificial bridge motion, or accepted camera/map/finale regressions.",
+      "scope": "project",
+      "status": "converted",
+      "rejected_proposals": []
+    },
     {
       "id": "feedback-project-motion-routing-20260813",
       "target_agent": "coach",
@@ -65,61 +92,51 @@
       "scope": "project",
       "status": "converted",
       "rejected_proposals": []
-    },
-    {
-      "id": "feedback-unified-hidden-flash-jump-20260818",
-      "target_agent": "worker",
-      "source": "user",
-      "observed": "The first UFO still slid in from outside, opening sheep 2 through 4 used visible cross-field carrier travel, and the 0.104-second replacement flight still exposed intermediate UFO positions. This made deployment feel like sheep entering from offscreen instead of appearing at their assigned cells.",
-      "expected": "Use one point-flash grammar for initial deployment and replacement: no visible intermediate UFO body, no offstage first entry, and sheep revealed only at exact destination cells after the arrival flash.",
-      "evidence": "Fresh v29 frames showed the first entry descending from above, opening UFO positions interpolating across the field, and five visible carrier positions during the first turnover. The v30 candidate holds the hidden first UFO at its drop, hides deployments 2 through 6 for the final 0.052 playback seconds before each destination, hides turnover motion for 0.104 seconds, and retains exact-drop sheep transforms.",
-      "reproduction": "Inspect adjacent 700px frames around the first arrival, opening deployments 2 through 4, and first, maximum-distance, and final turnovers; reject any offstage slide, visible intermediate UFO or sheep body, missing destination light, or off-drop sheep reveal.",
-      "scope": "project",
-      "status": "converted",
-      "rejected_proposals": []
     }
   ],
   "proposals": [
     {
-      "id": "proposal-unified-hidden-flash-jump-v30",
+      "id": "proposal-waiting-inventory-appetite-v50",
       "feedback_ids": [
-        "feedback-unified-hidden-flash-jump-20260818"
+        "feedback-waiting-inventory-appetite-v50-20260819",
+        "feedback-inventory-dock-queue-v50-20260820"
       ],
       "target_agent": "worker",
       "author_agent": "coach",
-      "change_target": "first UFO appearance, opening inter-drop continuity, turnover visibility, destination light, deterministic SVG checks, README behavior description, and durable motion guardrails",
+      "change_target": "make turnover legible through a waiting inventory and relative appetite growth",
       "change_level": "task",
       "status": "accepted",
-      "from_version": 29,
-      "to_version": 30,
-      "cause": "The source treated fast travel as a visibly interpolated carrier path and still initialized the first UFO above the field. Exact sheep anchors could not prevent the carrier motion from communicating an offscreen delivery.",
-      "candidate_change": "Initialize the UFO invisibly at the exact first drop, reveal it through the existing destination light, hold at each completed deployment stop until a hidden 0.052-second coordinate jump, and hide every turnover UFO through its existing 0.104-second exchange window. Keep sheep spawn, landing, and ready transforms fixed at exact destinations.",
-      "discovery_evidence": "Adjacent v29 frames reproduced the offstage first descent and intermediate UFO body during opening and turnover travel. Adjacent v30 frames show an empty field before the first exact-drop flash, no UFO body during deployments 2 through 6 or turnover coordinate changes, and destination-only UFO and sheep reveals.",
-      "reproduction": "Run npm run visual:fixture and npm run check; inspect fresh 700px forced-theme adjacent first-entry, opening 2 through 6, first/later/final turnover, reduced-motion, roster, finale, and terminal frames.",
-      "primary_metric": "Zero visible intermediate UFO or sheep frames during first entry, all five opening inter-drop jumps, and all 22 turnover jumps, with one existing-light destination flash and exact-drop sheep reveal for every deployment.",
-      "prediction": "One hidden point-flash grammar across deployment and turnover will eliminate the offscreen-slide impression more reliably than further reducing visible travel duration, without adding assets or effects.",
+      "from_version": 49,
+      "to_version": 50,
+      "cause": "The accepted field exchange was mechanically continuous but the lower panel provided no persistent source of incoming identities. The first inventory draft mixed waiting and collected states, shifted immediately, used absolute appetite assumptions, replayed collected cargo beside the dock, and seeded motion from a seventh off-grid slot, so it read as lag or a rendering error and scaled poorly across user activity levels.",
+      "candidate_change": "Reuse the centre status merge for exactly six fixed waiting pens and the existing UFO glyph. Drive it only from visual dispatch times: leave opening holes before one group refill, then load the front sheep, hold one empty pen, and shift only the five visible in-grid sheep one slot per turnover before revealing the next sheep in the last pen. Keep the dock unboxed with no collected-sheep replay, and let collected energy remain on the accepted pickup and finale path. Decrease the count to zero, remove artificial bridge cells, and drop each incoming actor at its first bite. Rank weeks relative to the same user's active weeks, assign deterministic balanced appetite quotas, normalize fullness to each capacity, and reuse the existing growth track so every sheep starts at scale 1 while full high and low sheep end near a 1.20 ratio.",
+      "discovery_evidence": "The renderer already owns sheep art, identity tags, the UFO symbol, exact spawn/hide times, bite energy, and growth keyframes. Reusing those paths requires no dependency, random state, second actor model, or new effect layer.",
+      "reproduction": "Run npm run visual:fixture and npm run check; inspect native and 3x dark/light representative plus sparse/dense opening, turnover, growth, and terminal frames; verify inventory count and tag mapping, no collected replay or source slot outside 0..5, direct first-bite drops, appetite balance and scale ratio, reduced motion, camera/map/finale, selected opacity, and 30fps/120fps lifecycle continuity; require a fresh independent Gate.",
+      "primary_metric": "At 700px every dispatch reads as one actual waiting sheep leaving a stable six-pen queue, while different user activity densities still produce a balanced appetite mix whose growth begins equally and ends with a visible but restrained 20% high/low size difference.",
+      "prediction": "A waiting-only queue with explicit holes and one-step movement will communicate replacement more clearly than roster or text status, and per-user relative appetite will preserve large sheep for both heavy and casual contributors.",
       "expected_delta": {
-        "offstage_first_entries": 0,
-        "hidden_opening_jumps": 5,
-        "opening_jump_playback_seconds": 0.052,
-        "hidden_turnover_jumps": 22,
-        "turnover_jump_playback_seconds": 0.104,
-        "new_assets": 0
+        "fixture_bytes": 2406604,
+        "fixture_runtime_seconds": 48.838,
+        "fixed_inventory_pens": 6,
+        "representative_inventory_start": 28,
+        "representative_inventory_end": 0,
+        "turnover_source_seconds": 0.42,
+        "mature_high_low_ratio": 1.2,
+        "new_dependencies": 0
       },
-      "falsification_condition": "Reject if the first UFO slides from outside, any opening or turnover jump exposes an intermediate body, a destination flash or exact-drop sheep reveal is missing, an incoming sheep appears before its panel handoff, any accepted causal or layout check regresses, runtime exceeds 50 seconds, or npm run check fails.",
-      "regression_check": "npm run check plus a fresh exact-time 700px Gate across first entry, opening drops, multiple turnovers, themes, reduced motion, 10/28/62 rosters, finale, and terminal state.",
-      "transfer_check": "Not applicable; this is a project-scoped motion correction.",
+      "falsification_condition": "Reject if waiting count rises or fails to end at zero; collected sheep rejoin; opening or turnover holes are not legible; queue motion resembles a jump or duplicate; appetite depends on absolute commit thresholds or randomness; sheep begin at different sizes; mature high/low ratio is not approximately 1.20; direct drops break lifecycle continuity; or accepted motion, camera, map, panel, theme, finale, size, and runtime checks regress.",
+      "regression_check": "npm run check plus a fresh independent visual Gate over waiting-inventory lifecycle, relative appetite and growth, direct first-bite drops, dark/light sparse/representative/dense layouts, reduced motion, camera/map/meter, terminal, selected opacity, and 30fps/120fps continuity.",
+      "transfer_check": "Not applicable; keep the inventory choreography and appetite calibration project-scoped.",
       "guardrails": [
-        "One original UFO and existing sheep art only",
-        "No visible intermediate carrier, new dependency, glyph, filter, blur, scan, marker, or effect layer",
-        "All 201 grass arrivals remain bite- and owner-synchronized",
-        "All replacement bridges keep exact 0.312-second playback edges and cleared adjacent paths",
-        "Preserve accepted themes, panel lifecycle, 10/28/62 rosters, early pickup, terminal state, and 53 finale phases",
-        "Runtime at or below 50 seconds and fixture growth below the frozen 15 percent budget",
-        "No permission expansion"
+        "Waiting inventory contains undispatched sheep only and decreases monotonically to zero",
+        "Use the existing sheep, UFO, tag, bite, and growth systems; add no actor or effect layer",
+        "Every sheep starts at scale 1 and grows only from recorded bites",
+        "Use per-user relative activity with deterministic balance, never random or absolute thresholds",
+        "Keep the live camera, fixed map, ten-cell fullness, themes, and finale",
+        "Add no dependency and do not push without explicit approval"
       ],
       "permission_delta": [],
-      "rollback": "Restore the published v29 visible first entry, opening travel, and turnover flight while retaining exact sheep anchors, energy, bridge, panel, theme, and finale behavior."
+      "rollback": "Restore accepted v49 without the waiting inventory, appetite tiers, or direct first-bite replacement drops."
     },
     {
       "id": "proposal-semantic-motion-diagnosis-v2",
@@ -194,18 +211,18 @@
   ],
   "promotions": [
     {
-      "id": "promotion-unified-hidden-flash-jump-v30-20260818",
-      "proposal_id": "proposal-unified-hidden-flash-jump-v30",
+      "id": "promotion-waiting-inventory-appetite-v50-20260820",
+      "proposal_id": "proposal-waiting-inventory-appetite-v50",
       "gate_agent": "gate",
-      "before": "The published v29 UFO slid in from above for the first deployment and exposed intermediate carrier positions during opening and turnover travel, so exact-cell sheep reveals could still feel like offscreen delivery.",
-      "after": "The accepted v30 UFO stays hidden at the exact first drop until its flash, holds at each deployment stop before one hidden 0.052-second jump, and hides through each 0.104-second turnover exchange. UFO and sheep bodies appear only at exact destinations with the existing arrival light.",
+      "before": "The lower panel had no persistent source for incoming identities; its first waiting-inventory draft replayed collected sheep beside a cramped boxed dock and animated a seventh sheep from beyond the six-pen grid. Appetite also used absolute activity assumptions.",
+      "after": "The centre panel contains only six fixed waiting pens and one unboxed UFO dock. Collected sheep remain on the field pickup and finale path, only the five visible in-grid occupants shift one adjacent pen, the next hidden sheep appears afterward in the last pen, and appetite is balanced relative to each user's active weeks with direct first-work-cell drops.",
       "regressions_passed": true,
       "decision": "accepted",
       "live_cycle": {
         "status": "observed",
-        "metric": "Fresh 700px adjacent first-entry, opening-drop, and turnover lifecycle frames plus deterministic hidden-window, destination-light, exact-anchor, causal, route, roster, theme, reduced-motion, finale, size, and runtime checks",
-        "rollback_threshold": "Roll back if the first UFO slides from outside, an opening or turnover jump exposes an intermediate UFO or sheep body, a destination flash or exact-drop reveal is missing, the benchmark falls below 16/20, any dimension falls below 3, runtime exceeds 50 seconds, or npm run check fails.",
-        "evidence": "A fresh Gate that did not author v30 scored it 20/20 with no blocker. The 1,229,601-byte, 48.581-second fixture keeps the first UFO absent until the 0.832-second exact-drop flash, hides opening jumps 2–6 for exactly 0.052 playback seconds, reveals sheep 3 and 4 only at 2.938 and 4.004 seconds, and hides all 22 turnover jumps for exactly 0.104 seconds. First, maximum-distance, and final exchanges preserve pre-jump INBOUND 0/20, destination light, clean white replacements, stopped holds, and cleared adjacent bridges with no intermediate UFO or sheep body. All 201 arrivals, exact 0.312-second bridge edges, serialized stops, endpoint separation, early final pickup, 10/28/62 rosters, both themes, reduced motion, terminal state, and 53 finale phases pass. Feature 8ea8215 and successful workflow 32086601719 published project asset 6f8af55 plus profile asset f4e30db and embed 0094973; profile README prose 32ef11e describes the hidden jump. Project/profile theme files match byte-for-byte, and the public 10-member dark SVG is 583,478 bytes, 35.204 seconds, with six INBOUND handoffs."
+        "metric": "Native light and 3x dark opening vacancy, refill, first-two and late turnover, reduced-motion, terminal, source-slot bounds, waiting count, relative appetite, growth ratio, direct drops, field-camera parity, map, fullness, themes, and finale",
+        "rollback_threshold": "Roll back if a collected sheep appears beside or inside inventory; an actor shifts from outside slots 0..5; the first empty pen or adjacent shift disappears; inventory rises or fails to end at zero; the dock becomes boxed or cramped; appetite becomes absolute or random; initial sizes diverge; the mature high/low ratio leaves approximately 1.20; or accepted motion, camera, map, meter, panel, theme, finale, size, runtime, and continuity checks fail.",
+        "evidence": "A fresh independent Gate scored v50 20/20 with no blocker. Source inspection found exactly six pens, all data-inventory-slot values within 0..5, five in-grid sheep in every shift group, no flock-inventory-return path, and an unboxed dock. Native light and 3x dark opening, refill, first-two and late-turnover frames show no right-edge ingress or collected-sheep replay; reduced motion and terminal remain coherent. Relative appetite retains deterministic 6 high / 1 normal / 3 low groups, capacities averaging 20, equal initial scale, and an approximately 1.20 mature high/low ratio. Direct first-work-cell drops and field/camera/map/fullness behavior remain intact. npm run visual:fixture, npm run check, and git diff --check pass; the fixture is 2,406,604 bytes and 48.838 seconds, 41.3% below the frozen baseline."
       }
     },
     {
@@ -228,11 +245,11 @@
   "archive": {
     "schema_version": 1,
     "path": "evolution.archive.json",
-    "sha256": "6395a570720089f12ef62b66d682b5aa5d2be841cdc117a8810f4682e8a0e4dc",
+    "sha256": "9c148114f809dd9da149e662a86afe92713b6f2c611c47e6dcbb2d53962bc600",
     "counts": {
-      "feedback": 32,
-      "proposals": 28,
-      "promotions": 11,
+      "feedback": 47,
+      "proposals": 45,
+      "promotions": 24,
       "autonomous_episodes": 0
     }
   }

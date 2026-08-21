@@ -10,10 +10,12 @@ import {
   MOTION_TIME_SCALE,
 } from "../../constants.js";
 import { getCellCenterPx } from "../../layout/gridLayout.js";
+import { buildSheepTagSvg } from "../../sheepTag.js";
 
 const BITE_ANTICIPATION_S = 0.06;
 const BITE_IMPACT_S = GRASS_STEP_TIMES_S[0];
 const BITE_RELEASE_S = GRASS_STEP_TIMES_S[GRASS_STEP_TIMES_S.length - 1];
+const GROWTH_PROGRESS_EXPONENT = 0.72;
 
 export function buildSheepLayer(params: {
   positionsHistory: [number, number][][];
@@ -21,7 +23,7 @@ export function buildSheepLayer(params: {
   spawnAbsS: number[];
   moveStartAbsS: number[];
   biteAbsSBySheep: number[][];
-  biteProgressBySheep: { atS: number; progress: number }[][];
+  biteProgressBySheep: { atS: number; progress: number; growthScale: number }[][];
   maxTotalTime: number;
   gridLeftX: number;
   gridTopY: number;
@@ -44,6 +46,8 @@ export function buildSheepLayer(params: {
   } | null;
   turnovers?: {
     slotIndex: number;
+    outgoingRosterIndex: number;
+    incomingRosterIndex: number;
     historyIndex: number;
     resumeHistoryIndex: number;
     pickupCell: [number, number];
@@ -55,9 +59,15 @@ export function buildSheepLayer(params: {
     dropArriveAbsS: number;
     incomingSpawnAbsS: number;
     incomingReadyAbsS: number;
+    incomingMoveAbsS: number;
     addedDelay: number;
   }[];
-}): { animationStyles: string; sheepGroups: string } {
+}): {
+  animationStyles: string;
+  sheepGroups: string;
+  cameraSheepGroups: string;
+  cameraTracks: Map<number, { atS: number; x: number; y: number }[]>;
+} {
   const {
     positionsHistory,
     assignedIndices,
@@ -96,6 +106,8 @@ export function buildSheepLayer(params: {
         keyframes: "",
         animationCSS: "",
         poseCSS: "",
+        rosterActors: [],
+        cameraTrack: [],
       };
     }
     const totalPoints = timeline.length;
@@ -177,19 +189,20 @@ export function buildSheepLayer(params: {
       slotTurnovers
         .filter((turnover) => historyIndex >= turnover.historyIndex)
         .reduce((sum, turnover) => sum + turnover.addedDelay, 0);
-    const addProgress = (atS: number, progress: number) => {
+    const addProgress = (atS: number, progress: number, growthScale = 1.18) => {
       const pct = Math.min(
         99.9999,
         Math.max(0, maxTotalTime > 0 ? (atS * 100) / maxTotalTime : 0),
       );
-      const eased = Math.sqrt(Math.min(1, Math.max(0, progress)));
+      const normalized = Math.min(1, Math.max(0, progress));
+      const growthEased = Math.pow(normalized, GROWTH_PROGRESS_EXPONENT);
       growthEntries.push({
         pct,
-        css: `${pct.toFixed(4)}% { transform: scale(${(1 + eased * 0.15).toFixed(3)}); }`,
+        css: `${pct.toFixed(4)}% { transform: scale(${(1 + growthEased * (growthScale - 1)).toFixed(3)}); }`,
       });
       energyEntries.push({
         pct,
-        css: `${pct.toFixed(4)}% { opacity: ${(eased * 0.48).toFixed(3)}; }`,
+        css: `${pct.toFixed(4)}% { opacity: ${(Math.sqrt(normalized) * 0.48).toFixed(3)}; }`,
       });
     };
     const addPose = (atS: number, transform: string) => {
@@ -222,11 +235,11 @@ export function buildSheepLayer(params: {
     const dropOff = bodyShift(dropFrame.angle);
     const dropX = dropPx.x + dropOff.dx;
     const dropY = dropPx.y + dropOff.dy;
-    const offscreen = `transform: translate(-9999px, -9999px) rotate(180deg) scale(${sheepScale}) translate(${-SHEEP_VIEWBOX_CX}px, ${-SHEEP_VIEWBOX_CY}px); opacity: 0;`;
+    const initialDropTransform = `translate(${dropX}px, ${dropY}px) rotate(${dropFrame.angle}deg) scale(${sheepScale}) translate(${-SHEEP_VIEWBOX_CX}px, ${-SHEEP_VIEWBOX_CY}px)`;
     const pctSpawn = maxTotalTime > 0 ? (timeOffset * 100) / maxTotalTime : 0;
     keyframeEntries.push({
       pct: 0,
-      css: `0% { ${offscreen} }`,
+      css: `0% { transform: ${initialDropTransform}; opacity: 0; }`,
     });
     if (pctSpawn > 0) {
       keyframeEntries.push({
@@ -282,7 +295,7 @@ export function buildSheepLayer(params: {
         if (
           slotTurnovers.some(
             (turnover) =>
-              fi > turnover.historyIndex &&
+              fi >= turnover.historyIndex &&
               fi < turnover.resumeHistoryIndex,
           )
         ) continue;
@@ -309,7 +322,7 @@ export function buildSheepLayer(params: {
         if (
           slotTurnovers.some(
             (turnover) =>
-              ti > turnover.historyIndex &&
+              ti >= turnover.historyIndex &&
               ti < turnover.resumeHistoryIndex,
           )
         ) continue;
@@ -374,6 +387,7 @@ export function buildSheepLayer(params: {
           biteStart + BITE_RELEASE_S,
           biteProgress[biteIndex]?.progress ??
             (biteIndex + 1) / Math.max(1, bites.length),
+          biteProgress[biteIndex]?.growthScale,
         );
       }
     }
@@ -408,6 +422,7 @@ export function buildSheepLayer(params: {
         [turnover.incomingSpawnAbsS, dropTransform, 0],
         [landingAbsS, dropTransform, 1],
         [turnover.incomingReadyAbsS, dropTransform, 1],
+        [turnover.incomingMoveAbsS, dropTransform, 1],
       ] as const) {
         const pct = Math.min(99.9999, (atS * 100) / maxTotalTime);
         keyframeEntries.push({
@@ -425,7 +440,7 @@ export function buildSheepLayer(params: {
         );
         const stepDuration =
           turnover.bridgeDuration / (turnover.dropPath.length - 1);
-        const atS = turnover.incomingReadyAbsS + stepDuration * index;
+        const atS = turnover.incomingMoveAbsS + stepDuration * index;
         const pct = Math.min(99.9999, (atS * 100) / maxTotalTime);
         keyframeEntries.push({
           pct,
@@ -440,10 +455,17 @@ export function buildSheepLayer(params: {
       }
       addPose(turnover.pickupArriveAbsS, "translateY(0) scale(1, 1)");
       addPose(turnover.outgoingHiddenAbsS, "translateY(-6px) scale(.86, 1.1)");
-      addPose(turnover.incomingSpawnAbsS, "scale(.76, .76)");
+      addPose(turnover.incomingSpawnAbsS, "scale(.62, .62)");
       addPose(landingAbsS, "scale(1.12, .88)");
       addPose(turnover.incomingReadyAbsS, "scale(1, 1)");
-      addProgress(turnover.outgoingHiddenAbsS, 1);
+      addPose(turnover.incomingMoveAbsS, "scale(1, 1)");
+      addProgress(
+        turnover.outgoingHiddenAbsS,
+        1,
+        biteProgress
+          .filter(({ atS }) => atS <= turnover.outgoingHiddenAbsS)
+          .at(-1)?.growthScale,
+      );
       addProgress(turnover.incomingSpawnAbsS, 0);
     }
 
@@ -531,7 +553,7 @@ export function buildSheepLayer(params: {
     });
 
     const delay = 0;
-    const initialTransform = `transform: translate(-9999px, -9999px) rotate(180deg) scale(${sheepScale}) translate(${-SHEEP_VIEWBOX_CX}px, ${-SHEEP_VIEWBOX_CY}px); opacity: 0; `;
+    const initialTransform = `transform: ${initialDropTransform}; opacity: 0; `;
 
     const sorted = keyframeEntries.slice().sort((a, b) => a.pct - b.pct);
     const unique: typeof sorted = [];
@@ -554,6 +576,16 @@ export function buildSheepLayer(params: {
         return `rotate(${angle}deg)`;
       }),
     );
+    const cameraTrack = unique.flatMap(({ pct, css }) => {
+      const match = css.match(/translate\(([-\d.]+)px, ([-\d.]+)px\)/);
+      return match == null
+        ? []
+        : [{
+            atS: (pct * maxTotalTime) / 100,
+            x: Number(match[1]),
+            y: Number(match[2]),
+          }];
+    });
 
     poseEntries.push({
       pct: 100,
@@ -606,12 +638,58 @@ export function buildSheepLayer(params: {
     };
     const dedupedGrowth = dedupeTimedCss(growthEntries);
     const dedupedEnergy = dedupeTimedCss(energyEntries);
+    const finalHiddenAbsS = hasPickup
+      ? pickupT + pickupWait + pickupLight * 0.6 + pickupFade
+      : maxTotalTime;
+    const orderedTurnovers = slotTurnovers.slice().sort(
+      (a, b) => a.incomingSpawnAbsS - b.incomingSpawnAbsS,
+    );
+    const rosterActors = [
+      {
+        rosterIndex: orderedTurnovers[0]?.outgoingRosterIndex ?? si,
+        start: timeOffset,
+        end: orderedTurnovers[0]?.outgoingHiddenAbsS ?? finalHiddenAbsS,
+      },
+      ...orderedTurnovers.map((turnover, index) => ({
+        rosterIndex: turnover.incomingRosterIndex,
+        start: turnover.incomingSpawnAbsS,
+        end:
+          orderedTurnovers[index + 1]?.outgoingHiddenAbsS ?? finalHiddenAbsS,
+      })),
+    ].map(({ rosterIndex, start, end }) => {
+      const name = `sheep-roster-${rosterIndex}-visible`;
+      const startPct = Math.max(0, (start * 100) / maxTotalTime);
+      const endPct = Math.min(100, (end * 100) / maxTotalTime);
+      const finalVisibility = endPct < 100 ? "hidden" : "visible";
+      return {
+        rosterIndex,
+        start,
+        end,
+        keyframes: `@keyframes ${name} {
+    0% { visibility:hidden; }
+    ${Math.max(0, startPct - 0.0001).toFixed(4)}% { visibility:hidden; }
+    ${startPct.toFixed(4)}% { visibility:visible; }
+    ${Math.max(startPct, endPct - 0.0001).toFixed(4)}% { visibility:visible; }
+    ${endPct.toFixed(4)}% { visibility:${finalVisibility}; }
+    100% { visibility:${finalVisibility}; }
+  }`,
+        animationCSS: `visibility:hidden;animation:${name} ${animationDuration}s steps(1,end) 0s 1 both;`,
+      };
+    });
 
+    const lastBite = biteProgress.at(-1);
+    const finalGrowth = lastBite == null
+      ? 1
+      : 1 + Math.pow(lastBite.progress, GROWTH_PROGRESS_EXPONENT) *
+        (lastBite.growthScale - 1);
     return {
       id: `sheep-${si}`,
-      keyframes: `@keyframes sheep-${si}-move {\n    ${deduped.join("\n    ")}\n  }\n  @keyframes sheep-${si}-pose {\n    ${dedupedPose.join("\n    ")}\n  }\n  @keyframes sheep-${si}-head {\n    ${dedupedHead.join("\n    ")}\n  }\n  @keyframes sheep-${si}-growth {\n    ${dedupedGrowth.join("\n    ")}\n    100% { transform: scale(${biteProgress.length > 0 ? (1 + Math.sqrt(biteProgress.at(-1)!.progress) * 0.15).toFixed(3) : 1}); }\n  }\n  @keyframes sheep-${si}-energy {\n    ${dedupedEnergy.join("\n    ")}\n    100% { opacity: ${biteProgress.length > 0 ? (Math.sqrt(biteProgress.at(-1)!.progress) * 0.48).toFixed(3) : 0}; }\n  }\n  .sheep-${si} .sheep-head { transform-box: fill-box; transform-origin: center; animation: sheep-${si}-head ${animationDuration}s cubic-bezier(.2,.8,.2,1) 0s 1 both; }\n  .sheep-${si} .sheep-growth { transform-box: fill-box; transform-origin: center; animation: sheep-${si}-growth ${animationDuration}s cubic-bezier(.2,.8,.2,1) 0s 1 both; }\n  .sheep-${si} .sheep-energy { animation: sheep-${si}-energy ${animationDuration}s linear 0s 1 both; }`,
+      keyframes: `@keyframes sheep-${si}-move {\n    ${deduped.join("\n    ")}\n  }\n  @keyframes sheep-${si}-pose {\n    ${dedupedPose.join("\n    ")}\n  }\n  @keyframes sheep-${si}-head {\n    ${dedupedHead.join("\n    ")}\n  }\n  @keyframes sheep-${si}-growth {\n    ${dedupedGrowth.join("\n    ")}\n    100% { transform: scale(${finalGrowth.toFixed(3)}); }\n  }\n  @keyframes sheep-${si}-energy {\n    ${dedupedEnergy.join("\n    ")}\n    100% { opacity: ${biteProgress.length > 0 ? (Math.sqrt(biteProgress.at(-1)!.progress) * 0.48).toFixed(3) : 0}; }\n  }\n  .sheep-${si} .sheep-head { transform-box: fill-box; transform-origin: center; animation: sheep-${si}-head ${animationDuration}s cubic-bezier(.2,.8,.2,1) 0s 1 both; }\n  .sheep-${si} .sheep-growth { transform-box: fill-box; transform-origin: center; animation: sheep-${si}-growth ${animationDuration}s cubic-bezier(.2,.8,.2,1) 0s 1 both; }\n  .sheep-${si} .sheep-energy { animation: sheep-${si}-energy ${animationDuration}s linear 0s 1 both; }`,
       animationCSS: `${initialTransform}animation: sheep-${si}-move ${animationDuration}s linear ${delay * MOTION_TIME_SCALE}s 1 both;`,
       poseCSS: `transform-box:fill-box; transform-origin:center; animation:sheep-${si}-pose ${animationDuration}s linear 0s 1 both;`,
+      headCSS: `transform-box:fill-box; transform-origin:center; animation:sheep-${si}-head ${animationDuration}s cubic-bezier(.2,.8,.2,1) 0s 1 both;`,
+      rosterActors,
+      cameraTrack,
     };
   });
 
@@ -619,23 +697,40 @@ export function buildSheepLayer(params: {
     (a: { keyframes: string }) => a.keyframes.length > 0,
   );
   const animationStyles = validSheepAnimations
-    .map((a: { keyframes: string }) => a.keyframes)
+    .flatMap((a) => [
+      a.keyframes,
+      ...a.rosterActors.map((actor) => actor.keyframes),
+    ])
     .join("\n  ");
 
   let sheepGroups: string;
+  let cameraSheepGroups: string;
   if (validSheepAnimations.length > 0) {
-    sheepGroups = validSheepAnimations
-      .map(
-        (a: { id: string; animationCSS: string; poseCSS: string }) =>
-          `<g class="${a.id}" style="${a.animationCSS}"><g class="sheep-growth"><g class="sheep-actor" style="${a.poseCSS}">${SHEEP_CONTENT}<path class="sheep-energy" d="M4.8 6.2Q6.1 5.1 7.1 6.2M7.3 8.5Q8.4 7.2 9.5 8.1M9.2 5.3Q10.3 4.7 11.1 5.8" fill="none" stroke="var(--gm-level-3)" stroke-width=".75" stroke-linecap="round" opacity="0"/></g></g></g>`,
-      )
-      .join("\n  ");
+    const renderGroups = (camera: boolean) => validSheepAnimations
+      .flatMap((a) => a.rosterActors.map((actor) =>
+        `<g class="${camera ? "camera-sheep-roster" : "sheep-roster"}-${actor.rosterIndex}${camera ? " sheep-camera-copy" : ""}" data-${camera ? "camera-" : ""}roster-index="${actor.rosterIndex}" style="${actor.animationCSS}"><g class="${a.id}" style="${a.animationCSS}"><g class="sheep-growth"><g class="sheep-actor" style="${a.poseCSS}">${SHEEP_CONTENT}<g class="sheep-ear-tag" transform="translate(0,-1.55)" style="${a.headCSS}">${buildSheepTagSvg({ rosterIndex: actor.rosterIndex, x: 3, y: 4.55, size: 2.1, className: camera ? "sheep-camera-tag" : "sheep-field-tag", strokeWidth: 0.22 })}</g><path class="sheep-energy" d="M4.8 6.2Q6.1 5.1 7.1 6.2M7.3 8.5Q8.4 7.2 9.5 8.1M9.2 5.3Q10.3 4.7 11.1 5.8" fill="none" stroke="var(--gm-level-3)" stroke-width=".75" stroke-linecap="round" opacity="0"/></g></g></g></g>`,
+      )).join("\n  ");
+    sheepGroups = `<g data-growth-exponent="${GROWTH_PROGRESS_EXPONENT}">${renderGroups(false)}</g>`;
+    cameraSheepGroups = `<g data-growth-exponent="${GROWTH_PROGRESS_EXPONENT}">${renderGroups(true)}</g>`;
   } else {
     const pos = getCellCenterPx(gridLeftX, gridTopY, 0, 0);
     const off = bodyShift(180);
     const transform = `translate(${pos.x + off.dx}px, ${pos.y + off.dy}px) rotate(180deg) scale(${sheepScale}) translate(${-SHEEP_VIEWBOX_CX}px, ${-SHEEP_VIEWBOX_CY}px)`;
     sheepGroups = `<g class="sheep-fallback" transform="${transform}">${SHEEP_CONTENT}</g>`;
+    cameraSheepGroups = sheepGroups;
   }
 
-  return { animationStyles, sheepGroups };
+  const cameraTracks = new Map<number, { atS: number; x: number; y: number }[]>();
+  for (const animation of validSheepAnimations) {
+    for (const actor of animation.rosterActors) {
+      cameraTracks.set(
+        actor.rosterIndex,
+        animation.cameraTrack.filter(
+          ({ atS }) => atS >= actor.start - 0.001 && atS <= actor.end + 0.001,
+        ),
+      );
+    }
+  }
+
+  return { animationStyles, sheepGroups, cameraSheepGroups, cameraTracks };
 }

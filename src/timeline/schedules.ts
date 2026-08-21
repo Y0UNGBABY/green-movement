@@ -5,10 +5,14 @@ import type { TimelineResult } from "./types.js";
 import type { FlockPlan } from "../svg/flock.js";
 import {
   SHEEP_CELL_TIME,
+  SHEEP_FULLNESS_CAPACITY,
+  INVENTORY_OPENING_GATE_S,
+  INVENTORY_OPENING_CYCLE_S,
+  INVENTORY_TURNOVER_EXCHANGE_S,
   UFO_ENTRY_S,
-  UFO_CELL_TIME,
-  UFO_MOVE_MIN_S,
-  UFO_MOVE_MAX_S,
+  UFO_BLINK_TRAVEL_S,
+  UFO_BLINK_EDGE_S,
+  UFO_BLINK_FADE_S,
 } from "../svg/constants.js";
 
 const LIGHT_RAMP_S = 0.04;
@@ -20,16 +24,16 @@ const UFO_RELEASE_S = 0.06;
 const PICKUP_WAIT_S = 0.2;
 const PICKUP_LIGHT_S = 0.14;
 const PICKUP_FADE_S = 0.18;
+const SERVICE_OFFSTAGE_HOLD_S = 0.06;
 const SIGNATURE_FALSE_END_S = 0.28;
-const SIGNATURE_APPROACH_S = 0.3;
+const SIGNATURE_APPROACH_S = UFO_BLINK_TRAVEL_S;
 const SIGNATURE_FOCUS_S = 0.18;
 const SIGNATURE_IMPACT_S = 0.12;
 const SIGNATURE_REVEAL_S = 1.08;
 const SIGNATURE_CONFIRM_S = 0.28;
-const SIGNATURE_EXIT_S = 0.36;
+const SIGNATURE_EXIT_S = UFO_BLINK_TRAVEL_S;
 const SIGNATURE_HOLD_S = 1.4;
 const TURNOVER_PICKUP_S = 0.16;
-const TURNOVER_EXCHANGE_S = 0.08;
 const TURNOVER_DROP_S = LIGHT_RAMP_S + SHEEP_FADE_S;
 
 export function buildTimeline(
@@ -86,11 +90,7 @@ export function buildTimeline(
     const prevLeave = i === 0 ? 0 : ufoLeaveAbsS[i - 1];
     let arrive = prevLeave;
     if (i >= 1 && funnelPositionsEarly[i] && funnelPositionsEarly[i - 1]) {
-      const distCells =
-        Math.abs(funnelPositionsEarly[i][0] - funnelPositionsEarly[i - 1][0]) +
-        Math.abs(funnelPositionsEarly[i][1] - funnelPositionsEarly[i - 1][1]);
-      const travelS = Math.max(UFO_MOVE_MIN_S, distCells * UFO_CELL_TIME);
-      arrive = prevLeave + travelS;
+      arrive = prevLeave + UFO_BLINK_TRAVEL_S;
     }
     const earliestArrival = Math.max(
       0,
@@ -101,21 +101,15 @@ export function buildTimeline(
     const baseSpawn = arrive + DROP_WAIT_S;
     visualSpawnAbsS[i] = Math.max(simSpawnAbsS[i] ?? 0, baseSpawn);
     readyAbsS[i] = visualSpawnAbsS[i] + (LIGHT_RAMP_S + SHEEP_FADE_S);
+    ufoLeaveAbsS[i] = (readyAbsS[i] ?? 0) + UFO_RELEASE_S;
     const simOffset = (moveStartAbsS[i] ?? 0) - (simSpawnAbsS[i] ?? 0);
     visualMoveStartAbsS[i] = Math.max(
-      readyAbsS[i],
+      ufoLeaveAbsS[i] + UFO_BLINK_EDGE_S + UFO_BLINK_FADE_S,
       visualSpawnAbsS[i] + Math.max(0, simOffset),
     );
-    ufoLeaveAbsS[i] = (readyAbsS[i] ?? 0) + UFO_RELEASE_S;
   }
 
-  const travelSCells = (from: [number, number], to: [number, number]) => {
-    const dist = Math.abs(to[0] - from[0]) + Math.abs(to[1] - from[1]);
-    return Math.min(
-      UFO_MOVE_MAX_S,
-      Math.max(UFO_MOVE_MIN_S, dist * UFO_CELL_TIME),
-    );
-  };
+  const travelSCells = () => UFO_BLINK_TRAVEL_S;
   const visualBaseTime = (slotIndex: number, baseTime: number) => {
     const simFirstMoveArrival =
       (spawnTick[slotIndex] ?? 0) * SHEEP_CELL_TIME +
@@ -148,26 +142,27 @@ export function buildTimeline(
     dropArriveAbsS: number;
     incomingSpawnAbsS: number;
     incomingReadyAbsS: number;
+    incomingMoveAbsS: number;
     leaveAbsS: number;
     addedDelay: number;
   }[] = [];
   const ufoStopCells = funnelPositionsEarly.slice();
   let serviceCursor = ufoLeaveAbsS.at(-1) ?? 0;
-  let serviceCell = funnelPositionsEarly.at(-1) ?? [0, 0];
   for (const turnover of flock.turnovers) {
     const requested =
       visualBaseTime(turnover.slotIndex, turnover.baseTime) +
       slotDelays[turnover.slotIndex];
     const arrive = Math.max(
       requested,
-      serviceCursor + travelSCells(serviceCell, turnover.pickupCell),
+      serviceCursor + travelSCells(),
     );
     const outgoingHidden = arrive + TURNOVER_PICKUP_S;
-    const dropArrive = outgoingHidden + TURNOVER_EXCHANGE_S;
+    const dropArrive = outgoingHidden + INVENTORY_TURNOVER_EXCHANGE_S;
     const incomingSpawn = dropArrive;
     const incomingReady = incomingSpawn + TURNOVER_DROP_S;
-    const leave = incomingReady;
-    const addedDelay = Math.max(0, incomingReady - requested) + turnover.bridgeDelay;
+    const leave = incomingReady + UFO_RELEASE_S;
+    const incomingMove = leave + UFO_BLINK_EDGE_S + UFO_BLINK_FADE_S;
+    const addedDelay = Math.max(0, incomingMove - requested) + turnover.bridgeDelay;
     slotDelays[turnover.slotIndex] += addedDelay;
     scheduledTurnovers.push({
       ...turnover,
@@ -176,6 +171,7 @@ export function buildTimeline(
       dropArriveAbsS: dropArrive,
       incomingSpawnAbsS: incomingSpawn,
       incomingReadyAbsS: incomingReady,
+      incomingMoveAbsS: incomingMove,
       leaveAbsS: leave,
       addedDelay,
     });
@@ -183,10 +179,9 @@ export function buildTimeline(
     ufoArriveAbsS.push(arrive, dropArrive);
     visualSpawnAbsS.push(arrive, incomingSpawn);
     readyAbsS.push(outgoingHidden, incomingReady);
-    visualMoveStartAbsS.push(outgoingHidden, incomingReady);
+    visualMoveStartAbsS.push(outgoingHidden, incomingMove);
     ufoLeaveAbsS.push(outgoingHidden, leave);
     serviceCursor = leave;
-    serviceCell = turnover.dropCell;
   }
 
   const delayAt = (slotIndex: number, baseTime: number) =>
@@ -225,17 +220,16 @@ export function buildTimeline(
   const pickupCells: [number, number][] = [];
   const pickupVisitSheep: number[] = [];
   const pending = [...activeSheepIndices];
-  let tCursor = serviceCursor + UFO_MOVE_MAX_S;
-  let prevCell: [number, number] = serviceCell;
+  let tCursor =
+    serviceCursor + UFO_BLINK_TRAVEL_S + SERVICE_OFFSTAGE_HOLD_S;
   while (pending.length > 0) {
     let nextPendingIndex = 0;
     let nextArrival = Number.POSITIVE_INFINITY;
     for (let index = 0; index < pending.length; index++) {
       const sheepIndex = pending[index];
-      const nextCell = finalCellBySheep.get(sheepIndex)!;
       const arrival = Math.max(
         finishBySheep.get(sheepIndex) ?? 0,
-        tCursor + travelSCells(prevCell, nextCell),
+        tCursor + travelSCells(),
       );
       if (arrival < nextArrival) {
         nextPendingIndex = index;
@@ -250,7 +244,6 @@ export function buildTimeline(
     pickupArriveBySheep[sheepIndex] = nextArrival;
     tCursor += PICKUP_WAIT_S;
     tCursor += PICKUP_LIGHT_S + PICKUP_FADE_S;
-    prevCell = nextCell;
   }
   const pickupEndAbsS = tCursor;
 
@@ -267,7 +260,11 @@ export function buildTimeline(
   const sweepPositions: [number, number][] = [[centerCol, Math.floor(maxY / 2)]];
   const sweepArriveAbsS: number[] = [signatureArriveAbsS];
 
-  const timelineOffset = UFO_ENTRY_S;
+  const openingBoardEndAbsS = flock.fieldCount > 0
+    ? INVENTORY_OPENING_GATE_S * 2 +
+      flock.fieldCount * INVENTORY_OPENING_CYCLE_S
+    : 0;
+  const timelineOffset = openingBoardEndAbsS + UFO_ENTRY_S;
   const maxTotalTimeWithEntryExit =
     Math.max(
       timelineOffset + maxTotalTime,
@@ -346,6 +343,7 @@ export function buildTimeline(
     dropArriveAbsS: turnover.dropArriveAbsS + timelineOffset,
     incomingSpawnAbsS: turnover.incomingSpawnAbsS + timelineOffset,
     incomingReadyAbsS: turnover.incomingReadyAbsS + timelineOffset,
+    incomingMoveAbsS: turnover.incomingMoveAbsS + timelineOffset,
     addedDelay: turnover.addedDelay,
   }));
 
@@ -371,19 +369,24 @@ export function buildTimeline(
     const hiddenAbsS =
       outgoing?.outgoingHiddenAbsS ??
       (isFinal ? pickupHiddenAbsSOffset[slotIndex] ?? null : null);
+    const rosterBites = flock.bites.filter(
+      (bite) => bite.rosterIndex === rosterIndex,
+    );
     return {
       rosterIndex,
       slotIndex,
+      spawnCell: incoming?.dropCell ?? funnelPositionsEarly[slotIndex] ?? [0, 0],
       inboundAbsS: incoming?.outgoingHiddenAbsS ?? null,
       spawnAbsS:
         incoming?.incomingSpawnAbsS ?? spawnAbsSOffset[slotIndex] ?? timelineOffset,
       pickupAbsS,
       hiddenAbsS,
-      bites: flock.bites
-        .filter((bite) => bite.rosterIndex === rosterIndex)
-        .map((bite) => {
+      capacity: rosterBites[0]?.capacity ?? SHEEP_FULLNESS_CAPACITY,
+      appetite: rosterBites[0]?.appetite ?? "normal",
+      bites: rosterBites.map((bite) => {
           const arrival = firstArrivals.get(bite.cell);
           return {
+            cell: bite.cell,
             atS: timelineOffset + (arrival?.arrivalTime ?? bite.baseArrivalTime),
             progress: bite.progress,
             level: bite.level,
@@ -421,6 +424,7 @@ export function buildTimeline(
   );
 
   return {
+    openingBoardEndAbsS,
     timelineOffset,
     maxTotalTimeWithEntryExit,
     firstArrivals,

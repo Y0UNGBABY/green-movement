@@ -413,6 +413,194 @@
         "scope": "project",
         "status": "converted",
         "rejected_proposals": []
+      },
+      {
+        "id": "feedback-unified-hidden-flash-jump-20260818",
+        "target_agent": "worker",
+        "source": "user",
+        "observed": "The first UFO still slid in from outside, opening sheep 2 through 4 used visible cross-field carrier travel, and the 0.104-second replacement flight still exposed intermediate UFO positions. This made deployment feel like sheep entering from offscreen instead of appearing at their assigned cells.",
+        "expected": "Use one point-flash grammar for initial deployment and replacement: no visible intermediate UFO body, no offstage first entry, and sheep revealed only at exact destination cells after the arrival flash.",
+        "evidence": "Fresh v29 frames showed the first entry descending from above, opening UFO positions interpolating across the field, and five visible carrier positions during the first turnover. The v30 candidate holds the hidden first UFO at its drop, hides deployments 2 through 6 for the final 0.052 playback seconds before each destination, hides turnover motion for 0.104 seconds, and retains exact-drop sheep transforms.",
+        "reproduction": "Inspect adjacent 700px frames around the first arrival, opening deployments 2 through 4, and first, maximum-distance, and final turnovers; reject any offstage slide, visible intermediate UFO or sheep body, missing destination light, or off-drop sheep reveal.",
+        "scope": "project",
+        "status": "converted",
+        "rejected_proposals": []
+      },
+      {
+        "id": "feedback-visible-edge-blink-continuity-20260818",
+        "target_agent": "worker",
+        "source": "user",
+        "observed": "V30 made deployment and turnover fully hidden point jumps, while first entry, collection approaches, and final exit still communicated different movement rules. The user wanted a brief readable glide at both ends, a very fast green blink in the middle, and exact-drop sheep that never appear to slide from outside the landing point.",
+        "expected": "Use one UFO grammar everywhere: short visible departure, fast body-hidden green blink, short visible destination approach, exact stop, operation, repeat. Hold opening sheep at the exact drop until the carrier departs.",
+        "evidence": "Fresh public-v30 20ms frames confirmed exact sheep anchors but showed opening sheep beginning to walk during the UFO release hold, which reads as sliding from under the carrier. Source tracing showed deployment and turnover used hidden addJump while collection and exit still called visible addFlight.",
+        "reproduction": "Inspect continuous 700px frames for first entry, sheep 3 and 4, the first and later exchanges, early final collection, and upward exit; reject mixed travel grammar, more than 12px visible at either edge, a missing green middle cue, or opening sheep motion before UFO departure.",
+        "scope": "project",
+        "status": "converted",
+        "rejected_proposals": []
+      },
+      {
+        "id": "feedback-independent-roster-fixed-rhythm-20260818",
+        "target_agent": "worker",
+        "source": "user",
+        "observed": "V31 still felt inconsistent, a newly delivered sheep could appear to slide in from outside its landing point, and turnover could read as the same collected sheep being moved and dropped again. Repeated still-image inspection had not isolated the structural cause.",
+        "expected": "Use one perceptual rhythm for every UFO leg, give each incoming roster identity a genuinely separate field actor, materialize it only at the exact drop, and keep it fixed until the departing UFO body is hidden.",
+        "evidence": "Source lifecycle tracing found that one SVG root per field slot was reused by roster identities 0, 6, 12, and later; hidden actors were parked at -9999px; incoming bridge movement began at UFO departure rather than after body disappearance; and shared percentage phases produced different playback durations across entry, deployment, turnover, convergence, and exit.",
+        "reproduction": "Trace every roster actor from first visibility at both 30fps and 120fps, inspect adjacent 700px entry/deployment/turnover/collection/convergence/exit frames, and reject actor reuse, any offscreen transform, an unstable first reveal, mixed UFO leg timing, or incoming movement before the departing body is hidden.",
+        "scope": "project",
+        "status": "converted",
+        "rejected_proposals": []
+      },
+      {
+        "id": "feedback-turnover-boundary-slide-20260818",
+        "target_agent": "worker",
+        "source": "user",
+        "observed": "The published v32 still lets replacement sheep, especially human SHEEP 06 and SHEEP 07, appear at the UFO drop and then slide in from another location.",
+        "expected": "After exact-drop reveal, each incoming sheep must remain there until movement starts and then traverse only its cleared adjacent bridge cells; no previous sheep coordinate may reappear.",
+        "evidence": "On the deployed 10-roster asset SHEEP 06 jumped 96.973px in 30ms and SHEEP 07 jumped 134.101px in 35ms. Source tracing found that the outgoing frame and pose at historyIndex equality survived the turnover skip, were delayed into the incoming lifecycle, and interpolated back toward the bridge.",
+        "reproduction": "Sample every incoming roster actor for 1.6 seconds after first visibility at both 30fps and 120fps, and reject any non-adjacent visible coordinate or any frame between incoming move start and bridge completion that is not an allowed bridge step.",
+        "scope": "project",
+        "status": "converted",
+        "rejected_proposals": []
+      },
+      {
+        "id": "feedback-fast-turnover-ranch-tag-v35-20260818",
+        "target_agent": "worker",
+        "source": "user",
+        "observed": "The proposed simultaneous 수거/출동 panel still felt like generic text pasted onto a fast exchange. The turnover is too short for a multi-stage card story, and the field sheep, selected portrait, and roster did not carry one memorable identity across pickup and replacement.",
+        "expected": "Express a UFO ranch exchange without another cinematic layer: give every sheep one persistent alien-ranch tag, cue the next roster slot before pickup, insert one unmistakable empty beat after the outgoing sheep disappears, then reveal the hungry tagged identity before its exact-drop field appearance.",
+        "evidence": "The representative first turnover provides only about 0.62 playback seconds from pickup to settled replacement. Current 700px dark/light frames show the incoming slot cue before pickup, outgoing tagged sheep 01 at 20/20, a truly empty selected region for 0.104 playback seconds, tagged sheep 07 at 0/20, and the same tag appearing only at its remote field drop.",
+        "reproduction": "At 700px, inspect frames before pickup, at outgoing extraction, inside the blank handoff, at incoming selection, and at exact drop in both themes; then inspect 10/28/62 terminal layouts and reject tag clipping, identity mismatch, fallback selected sheep during the gap, or any replacement text card.",
+        "scope": "project",
+        "status": "converted",
+        "rejected_proposals": [
+          "proposal-korean-pixel-handoff-v34"
+        ]
+      },
+      {
+        "id": "feedback-korean-pixel-handoff-v34-20260818",
+        "target_agent": "worker",
+        "source": "user",
+        "observed": "The English FIELD/FLOCK/GRASS header left three weak horizontal areas, the panel did not read as pixel-game UI, and the first v34 fence-plus-energy treatment became busier: repeated rail posts competed with the pasture while green check cells looked like a mobile badge or a part stuck under the UFO.",
+        "expected": "Use Korean 방목/양떼/잔디 labels in a real self-contained pixel font, preserve the prior restrained brown perimeter, remove every V/check and UFO cargo mark, centre a text-only 수거 완료 state, and distinguish the full outgoing and hungry incoming sheep through simultaneous IDs, 20/20 versus 0/20, and separate field actors.",
+        "evidence": "The user rejected the rendered rail-post fence, attached green cargo, and V icons after inspecting the candidate. Corrected 700px dark/light frames show the restored perimeter, Galmuri7 Korean labels, icon-free 10/28/62 rosters, centred 수거 완료, and a smaller clean incoming sheep at the exact remote drop.",
+        "reproduction": "Generate the representative plus 10- and 62-roster SVGs, inspect adjacent pickup/hidden/drop/ready frames at 700px in both themes, and reject any fallback Korean font, clipped label, V-shaped check, ufo-commit cargo, repeated panel fence tiles, or outgoing/incoming identity ambiguity.",
+        "scope": "project",
+        "status": "converted",
+        "rejected_proposals": []
+      },
+      {
+        "id": "feedback-simple-color-tag-panel-v36-20260818",
+        "target_agent": "worker",
+        "source": "user",
+        "observed": "The 3x3 sheep mark felt overworked, the selected sheep on the left appeared to fade as time passed, the 방목·양떼·잔디 row occupied only the right side, and the lower sheep, tag, number, and fullness layout did not use its available width cleanly.",
+        "expected": "Use one 1x1 sheep tag with varied contribution colors, switch the selected actor only at exact lifecycle boundaries, span the three status cells across the full panel, and distribute the lower selected detail and square roster with space-between while keeping fullness only in the selected region.",
+        "evidence": "The accepted v35 source rendered ten rectangles per tag, used linear timing on selected visibility, began the status row at x=212, and duplicated a compact ten-cell fullness meter in every roster slot. Fresh v36 700px dark/light frames show one colored square per tag, an equal x=10–650 status row, square roster endpoints at x=212 and x=650, and no compact meter; 1,970 selected-boundary samples contain no intermediate opacity.",
+        "reproduction": "At 700px inspect the representative cue, outgoing, blank, incoming, drop, middle, and terminal frames in both themes plus 10/62 rosters; sample every selected visibility keyframe and reject a non-square tag, fewer than four colors, gradual selected opacity, partial-width status row, duplicated compact fullness meter, uneven roster endpoints, or clipping.",
+        "scope": "project",
+        "status": "converted",
+        "rejected_proposals": []
+      },
+      {
+        "id": "feedback-horizontal-fullness-colored-ear-tags-v38-20260818",
+        "target_agent": "worker",
+        "source": "user",
+        "observed": "V37 replaced the prior per-sheep horizontal ten-cell fullness meter with fill inside each numbered square and kept every identity tag within the green contribution palette, even though the requested change was only the roster arrangement.",
+        "expected": "Restore the prior horizontal ten-cell fullness display for every sheep, place its one-square identity tag directly beside those cells, distribute the two-row cards with space-between, and give every reachable sheep a distinct varied-color tag that matches its ear and selected portrait.",
+        "evidence": "V35 source contains flock-meter-compact with ten discrete cells per roster actor, while v37 contains no compact symbol and clips progress into the whole numbered square. The current v38 candidate restores the compact symbol and renders each card as number over tag-plus-ten-cells; fresh 10/28/62 frames show distinct HSL tags beside the meters and the same tags at sheep ears.",
+        "reproduction": "At 700px inspect early and late 10/28/62 dark/light plus reduced-motion frames. Reject whole-square fullness, fewer or more than ten horizontal cells, a tag not adjacent to its meter, repeated tag color among reachable identities, tag mismatch across field/selected/roster, endpoint drift from x=212–650, clipping, or handoff regression.",
+        "scope": "project",
+        "status": "converted",
+        "rejected_proposals": [
+          "proposal-horizontal-fullness-colored-ear-tags-v38",
+          "proposal-readable-dense-horizontal-fullness-v39",
+          "proposal-raster-readable-dense-meter-v40"
+        ]
+      },
+      {
+        "id": "feedback-ear-tag-roster-fullness-v37-20260818",
+        "target_agent": "worker",
+        "source": "user",
+        "observed": "The field identity square read as a sticker attached to the sheep's body, and removing the compact per-roster meters also removed the visible sense that each numbered sheep was filling up.",
+        "expected": "Keep the simple varied-color 1x1 identity mark but hang it at the ear like an earring, and make the numbered roster visibly fill from the same recorded bites as before without undoing the square space-between layout.",
+        "evidence": "The v36 field tag was appended at body coordinates (9, 6.3), while the existing head nod lived in a separate sheep-head track; roster slots had only a static low-opacity fill. Fresh v37 3x and 700px frames place the mark beside the left ear under the same head keyframes and show bite-driven left-to-right fill inside 10/28/62 numbered squares.",
+        "reproduction": "At 700px and 3x inspect field and selected sheep in dark/light plus reduced motion, then compare early and later 10/28/62 roster frames. Reject a mark remaining on wool, a mark detached during a head nod, hidden numbers or identity colors, non-bite-driven fill, restored compact per-slot meters, lost space-between endpoints, or any handoff regression.",
+        "scope": "project",
+        "status": "converted",
+        "rejected_proposals": []
+      },
+      {
+        "id": "feedback-cardless-focus-roster-v45-20260819",
+        "target_agent": "worker",
+        "source": "user",
+        "observed": "The right roster still looks like a dense wall of miniature cards even after limiting numbers conceptually, because every identity owns a bordered square with multiple state outlines.",
+        "expected": "Remove the roster-card visual entirely. Use the same small pasture cells in two rows, keep bite-driven left-to-right fullness and a 2px identity corner, and show a number plus external corner cursor only on the focused sheep.",
+        "evidence": "The accepted v44 roster renders a 1.2px base border plus active, extracting, and selected full-box outlines around every 13.87–16px slot, with every two-digit number permanently visible. At native 700px these layers read as UI cards rather than pasture cells.",
+        "reproduction": "Inspect native 700px 10/28/62 dark/light frames. Reject persistent per-slot numbers, full rectangular borders or stacked outlines, off-grid cell placement, a focus number without an external cursor, lost 2px identity markers, lost horizontal fullness, or any panel/fence/motion regression.",
+        "scope": "project",
+        "status": "converted",
+        "rejected_proposals": []
+      },
+      {
+        "id": "feedback-unified-panel-grid-v44-20260819",
+        "target_agent": "worker",
+        "source": "user",
+        "observed": "The panel fence has conspicuous breaks beside both lower corners, its content sits closer to the perimeter than the pasture grid, and opaque status/selection cards make the panel read as a separate dashboard.",
+        "expected": "Continue the pasture's 12px contribution-grid surface into the panel with the same inset, merge aligned cells into 방목, 양떼, 잔디, selected-sheep, and fullness regions, keep the five-block health gauge and two-row 1x1 roster, and close the lower fence rhythm.",
+        "evidence": "The panel uses a 78px height, so buildFencePieces receives fenceBottomY 66, which is half a 12px tile off and leaves oversized gaps before both bottom corners. Its grid begins at 8px with reduced opacity while the pasture grid begins at 12px, and solid panel-background cards cover the grid.",
+        "reproduction": "At native 700px compare pasture and panel left/right/top/bottom insets and inspect both bottom fence corners. Reject a 66px bottom fence, interrupted lower corner rhythm, an 8px panel-grid inset, a different panel cell palette/pitch, free-floating card geometry, lost five-block health fill, changed roster hierarchy, clipping, or motion regression.",
+        "scope": "project",
+        "status": "converted",
+        "rejected_proposals": []
+      },
+      {
+        "id": "feedback-selected-health-bar-v43-20260819",
+        "target_agent": "worker",
+        "source": "user",
+        "observed": "The selected sheep's ten small contribution-style fullness cells still read as graph dots rather than the chunky segmented health gauge the user remembers.",
+        "expected": "Render selected fullness like the supplied game-character health reference: five broad horizontal blocks inside one dark rail, filling continuously from left to right so the final block can be partially filled. Keep exact 포만 n/20, the adjacent identity swatch, the full-width status row, and the square roster unchanged.",
+        "evidence": "The supplied 667x148 reference shows five wide green blocks with strong dark separation and a partially filled final gray block. The current selected meter is ten narrow 7px contribution cells without a unifying rail.",
+        "reproduction": "At native 700px inspect selected 0/20, partial, 18/20, and 20/20 states in dark and light. Reject ten tiny graph-like cells, vertical fill, a final block that cannot show partial fill, an added unexplained secondary bar, layout overlap, or any roster/header/motion regression.",
+        "scope": "project",
+        "status": "converted",
+        "rejected_proposals": []
+      },
+      {
+        "id": "feedback-clean-grid-corner-tags-v42-20260818",
+        "target_agent": "worker",
+        "source": "user",
+        "observed": "V38–v40 misread the request for the original horizontal selected-fullness cells as a request for ten cells inside every roster card, replacing the clean square roster with cramped strips; an interim correction then spread identity hues across whole roster squares and made the panel look noisy.",
+        "expected": "Keep the already-good full-width 방목·양떼·잔디 row and restore the clean square two-row roster. The selected fullness must remain the original ten horizontal cells filling left to right; each numbered roster square also fills left to right in contribution green. Varied identity color appears only on the ear, immediately beside the selected meter, and as a small top-right corner marker in the matching roster square.",
+        "evidence": "The accepted v37 700px frame is the clean-grid reference. Fresh v42 3x and native 700px dark/light frames show the same square 10/28/62 roster and original selected ten-cell meter, with unique HSL color limited to the ear, selected-meter swatch, and roster corner while green square fullness remains readable.",
+        "reproduction": "At native 700px inspect early, partial, and terminal 10/28/62 dark/light frames plus reduced motion. Reject a rectangular per-roster meter, colored whole roster square, vertical fullness, missing or mismatched corner marker, changed status row, clipped x=212–650 endpoints, hidden number, or any handoff/motion regression.",
+        "scope": "project",
+        "status": "converted",
+        "rejected_proposals": [
+          "proposal-raster-readable-dense-meter-v40"
+        ]
+      },
+      {
+        "id": "feedback-tracking-pasture-map-v48-20260819",
+        "target_agent": "worker",
+        "source": "user",
+        "observed": "Roster cards, focused roster numbers, a twenty-cell meter, and a miniature sheep per owned identity all made the lower panel look like another display area instead of an interactive control surface. The accepted fixed bite map solved the roster problem, but the left selected content still changed too abruptly and the map did not subtly identify who ate a cell.",
+        "expected": "Keep selected fullness as ten clearly separated horizontal cells. Replace the roster with a fixed activity map of real bite coordinates, then turn the left surface into a real contribution-grid crop that tracks the selected sheep. Mark only the current sheep's already-eaten map cells with a minimal cue matching its ear tag.",
+        "evidence": "User review rejected the irregular miniature-flock density and twenty-cell line, then described the v47 fixed bite map as the strongest panel direction so far. The remaining named gap was the fast left-panel transition and a restrained per-sheep trace on the map.",
+        "reproduction": "At native 700px inspect dark/light 10/28/62 early, bite, handoff, reduced, and terminal frames. Reject any roster, roster number, miniature panel flock, twenty-cell meter, free-floating camera art, identity-colored whole map cell, future or non-selected footprint, camera/footprint at terminal, or regression in motion continuity, panel geometry, themes, and finale.",
+        "scope": "project",
+        "status": "converted",
+        "rejected_proposals": []
+      },
+      {
+        "id": "feedback-live-hero-camera-v49-20260819",
+        "target_agent": "worker",
+        "source": "user",
+        "observed": "The v48 left panel still behaved like a rapidly switching selected-sheep widget rather than a believable enlargement of the active pasture. Frequent bite-target cuts made each subject too brief, while the terminal UFO and completion text remained visibly left within the left camera region.",
+        "expected": "Show the actual grazing field enlarged, choose a few representative sheep with nearby flock context, hold each long enough to show real movement, change only after collection, and centre the final UFO plus completion copy within the left 202px camera region rather than the whole panel.",
+        "evidence": "The user explicitly approved the long-lived hero recommendation after asking to see the real grazing view, nearby sheep, and movement for longer; final review called the result very good, then clarified that terminal centring refers to the left panel region rather than the full panel.",
+        "reproduction": "At native 700px inspect dark/light representative plus 10/62 hero holds, adjacent hero handoffs, reduced motion, and terminal. Reject a decorative camera actor, bite-speed cutting, a hero disappearing while its HUD is visible, field-camera pose mismatch, completion bounds not centred at x=113 within the left x=12..214 region, low-contrast completion copy, or any regression in the accepted map, meter, field lifecycle, theme, and finale.",
+        "scope": "project",
+        "status": "converted",
+        "rejected_proposals": []
       }
     ],
     "proposals": [
@@ -1574,6 +1762,721 @@
         ],
         "permission_delta": [],
         "rollback": "Restore the accepted v28 exact runtime and continuous exchange duration while retaining all earlier energy, bridge, panel, theme, and finale behavior."
+      },
+      {
+        "id": "proposal-visible-edge-blink-flight-v31",
+        "feedback_ids": [
+          "feedback-visible-edge-blink-continuity-20260818"
+        ],
+        "target_agent": "worker",
+        "author_agent": "coach",
+        "change_target": "shared UFO entry/service/finale/exit path, actual service timing, body/light visibility split, opening sheep departure hold, deterministic motion checks, and durable README guidance",
+        "change_level": "task",
+        "status": "accepted",
+        "from_version": 30,
+        "to_version": 31,
+        "cause": "V30 hid only selected coordinate changes and applied opacity to the whole moving UFO group, so the green cue disappeared with the body while entry, collection, and exit retained visible slides. Initial sheep also began walking during the carrier release hold.",
+        "candidate_change": "Route every UFO entry, service, finale-convergence, and exit leg through one existing-art blink helper: expose no more than 12px at departure, hide only the original UFO body while the existing green light carries the middle, expose no more than 12px into the destination, then stop exactly. Use 0.12 source seconds / 0.156 playback seconds for non-turnover service legs, retain the 0.08 source-second / 0.104 playback-second turnover exchange and fixed finale timing, and delay initial sheep walking until UFO departure.",
+        "discovery_evidence": "Fresh v31 adjacent frames show a partial first entrance, green middle blink, exact-drop approach; 2 through 6 deployment repeats; first turnover switches to SHEEP 07 INBOUND before a 0.104-second exchange and exact-drop reveal; collection and upward exit use the same grammar. Sheep 3 and 4 stay fixed through UFO departure. The fixture drops from 48.581 to 44.122 seconds without changing sheep pace.",
+        "reproduction": "Run npm run visual:fixture and npm run check; inspect fresh 700px forced-theme adjacent first-entry, deployment 2 through 4, first/later/final turnover, collection, final exit, reduced-motion, 10/28/62 roster, finale, and terminal frames.",
+        "primary_metric": "Every entry, deployment, turnover, collection, finale-convergence, and exit leg contains two bounded visible edges around one body-hidden green-light middle, with exact stops and zero opening sheep movement before UFO departure.",
+        "prediction": "One shared visible-edge blink helper and one shared 0.12 source-second / 0.156 playback-second service duration will communicate speed and continuity more clearly than separate hidden jumps and ordinary flights, without another asset or effect layer.",
+        "expected_delta": {
+          "maximum_visible_edge_pixels": 12,
+          "non_turnover_service_source_seconds": 0.12,
+          "non_turnover_service_playback_seconds": 0.156,
+          "turnover_exchange_playback_seconds": 0.104,
+          "opening_sheep_pre_departure_moves": 0,
+          "fixture_runtime_seconds": 44.122,
+          "new_assets": 0
+        },
+        "falsification_condition": "Reject if any service leg exposes the body across the middle, loses the green directional cue, exceeds 12 visible pixels at an edge, cuts instead of approaching the destination, lets an opening sheep move before carrier departure, reveals a sheep off-drop or in flight, regresses accepted causal/layout/finale behavior, exceeds 50 seconds, or npm run check fails.",
+        "regression_check": "npm run check plus a fresh exact-time 700px Gate across motion lifecycle, themes, reduced motion, roster densities, finale, terminal state, size, and runtime.",
+        "transfer_check": "Not applicable; this is a project-scoped motion correction.",
+        "guardrails": [
+          "One original UFO, existing green light, existing streak, and existing sheep art only",
+          "No new dependency, glyph, filter, blur, scan, marker, ambient wobble, banking, or effect layer",
+          "All 201 grass arrivals remain bite- and owner-synchronized",
+          "All replacement bridges keep exact 0.312-second playback edges and cleared adjacent paths",
+          "Preserve accepted themes, panel lifecycle, 10/28/62 rosters, early pickup, terminal state, and 53 finale phases",
+          "Runtime at or below 50 seconds and fixture growth below the frozen 15 percent budget",
+          "No permission expansion"
+        ],
+        "permission_delta": [],
+        "rollback": "Restore the published v30 hidden first/deployment/turnover jumps and distance-paced collection while retaining exact sheep anchors, energy, bridge, panel, theme, and finale behavior."
+      },
+      {
+        "id": "proposal-unified-hidden-flash-jump-v30",
+        "feedback_ids": [
+          "feedback-unified-hidden-flash-jump-20260818"
+        ],
+        "target_agent": "worker",
+        "author_agent": "coach",
+        "change_target": "first UFO appearance, opening inter-drop continuity, turnover visibility, destination light, deterministic SVG checks, README behavior description, and durable motion guardrails",
+        "change_level": "task",
+        "status": "accepted",
+        "from_version": 29,
+        "to_version": 30,
+        "cause": "The source treated fast travel as a visibly interpolated carrier path and still initialized the first UFO above the field. Exact sheep anchors could not prevent the carrier motion from communicating an offscreen delivery.",
+        "candidate_change": "Initialize the UFO invisibly at the exact first drop, reveal it through the existing destination light, hold at each completed deployment stop until a hidden 0.052-second coordinate jump, and hide every turnover UFO through its existing 0.104-second exchange window. Keep sheep spawn, landing, and ready transforms fixed at exact destinations.",
+        "discovery_evidence": "Adjacent v29 frames reproduced the offstage first descent and intermediate UFO body during opening and turnover travel. Adjacent v30 frames show an empty field before the first exact-drop flash, no UFO body during deployments 2 through 6 or turnover coordinate changes, and destination-only UFO and sheep reveals.",
+        "reproduction": "Run npm run visual:fixture and npm run check; inspect fresh 700px forced-theme adjacent first-entry, opening 2 through 6, first/later/final turnover, reduced-motion, roster, finale, and terminal frames.",
+        "primary_metric": "Zero visible intermediate UFO or sheep frames during first entry, all five opening inter-drop jumps, and all 22 turnover jumps, with one existing-light destination flash and exact-drop sheep reveal for every deployment.",
+        "prediction": "One hidden point-flash grammar across deployment and turnover will eliminate the offscreen-slide impression more reliably than further reducing visible travel duration, without adding assets or effects.",
+        "expected_delta": {
+          "offstage_first_entries": 0,
+          "hidden_opening_jumps": 5,
+          "opening_jump_playback_seconds": 0.052,
+          "hidden_turnover_jumps": 22,
+          "turnover_jump_playback_seconds": 0.104,
+          "new_assets": 0
+        },
+        "falsification_condition": "Reject if the first UFO slides from outside, any opening or turnover jump exposes an intermediate body, a destination flash or exact-drop sheep reveal is missing, an incoming sheep appears before its panel handoff, any accepted causal or layout check regresses, runtime exceeds 50 seconds, or npm run check fails.",
+        "regression_check": "npm run check plus a fresh exact-time 700px Gate across first entry, opening drops, multiple turnovers, themes, reduced motion, 10/28/62 rosters, finale, and terminal state.",
+        "transfer_check": "Not applicable; this is a project-scoped motion correction.",
+        "guardrails": [
+          "One original UFO and existing sheep art only",
+          "No visible intermediate carrier, new dependency, glyph, filter, blur, scan, marker, or effect layer",
+          "All 201 grass arrivals remain bite- and owner-synchronized",
+          "All replacement bridges keep exact 0.312-second playback edges and cleared adjacent paths",
+          "Preserve accepted themes, panel lifecycle, 10/28/62 rosters, early pickup, terminal state, and 53 finale phases",
+          "Runtime at or below 50 seconds and fixture growth below the frozen 15 percent budget",
+          "No permission expansion"
+        ],
+        "permission_delta": [],
+        "rollback": "Restore the published v29 visible first entry, opening travel, and turnover flight while retaining exact sheep anchors, energy, bridge, panel, theme, and finale behavior."
+      },
+      {
+        "id": "proposal-independent-roster-fixed-rhythm-v32",
+        "feedback_ids": [
+          "feedback-independent-roster-fixed-rhythm-20260818"
+        ],
+        "target_agent": "worker",
+        "author_agent": "coach",
+        "change_target": "shared UFO blink timing, roster field-actor lifecycle, exact-drop hold timing, deterministic SVG assertions, browser first-reveal probes, and durable behavior guidance",
+        "change_level": "task",
+        "status": "accepted",
+        "from_version": 31,
+        "to_version": 32,
+        "cause": "V31 reused one animated SVG root for every later identity occupying a field slot, parked hidden sheep offscreen, began the incoming bridge while the carrier was still visibly departing, and expressed shared UFO phases as percentages of unequal leg durations.",
+        "candidate_change": "Render one lifecycle actor per roster identity while reusing the existing slot route animation, remove all offscreen sheep coordinates, anchor each first visible transform to its exact drop, delay movement until the departing UFO body is hidden, and route entry, deployment, turnover, collection, finale convergence, and exit through one fixed 0.14-source-second / 0.182-playback-second blink with at most 8px of visible body travel at each edge and the existing compact green light plus streak in the middle.",
+        "discovery_evidence": "The local candidate contains 28 unique roster actors and no -9999px transform. Fresh 30fps and 120fps browser probes report zero outside or unstable first-reveal failures across all 28 identities. Adjacent 700px frames show the incoming sheep fixed at its exact drop until the carrier body is hidden and one 0.182-second UFO rhythm across every named leg.",
+        "reproduction": "Run npm run visual:fixture and npm run check; probe every roster actor's first visible coordinate at 30fps and 120fps; inspect fresh 700px forced-theme adjacent frames for entry, deployments, first/later/final turnover, collection, convergence, exit, reduced motion, roster density, finale, and terminal state.",
+        "primary_metric": "All roster identities own independent exact-drop lifecycles with zero offscreen or unstable first reveals, and every UFO leg uses the same fixed playback rhythm without cross-field body exposure.",
+        "prediction": "Fixing actor ownership and timing in their shared render and blink paths will remove the outside-slide and same-sheep story more reliably than another per-scene opacity or coordinate patch.",
+        "expected_delta": {
+          "ufo_leg_playback_seconds": 0.182,
+          "maximum_visible_edge_pixels": 8,
+          "unique_roster_actors": 28,
+          "offscreen_sheep_transforms": 0,
+          "first_reveal_failures_30fps": 0,
+          "first_reveal_failures_120fps": 0,
+          "fixture_runtime_seconds": 44.863,
+          "new_assets": 0
+        },
+        "falsification_condition": "Reject if any roster identity reuses another identity's DOM actor, any hidden sheep uses an offscreen coordinate, a first visible frame is outside or moving into its drop, a sheep moves before the departing UFO body is hidden, UFO legs use different playback rhythms, body travel crosses the middle, accepted causal/layout/finale behavior regresses, runtime exceeds 50 seconds, or npm run check fails.",
+        "regression_check": "npm run check plus a fresh independent exact-time 700px Gate across lifecycle, 30fps and 120fps first reveals, themes, reduced motion, roster densities, finale, terminal state, size, and runtime.",
+        "transfer_check": "Not applicable; this is a project-scoped actor-lifecycle and motion correction.",
+        "guardrails": [
+          "Reuse the original UFO, existing sheep art, existing green light, and single streak",
+          "No new dependency, asset, glyph, filter, blur, scan, marker, ambient wobble, banking, or effect layer",
+          "All 201 grass arrivals remain bite- and owner-synchronized",
+          "All replacement bridges keep exact 0.312-second playback edges and cleared adjacent paths",
+          "Preserve accepted staffing, themes, panel lifecycle, 10/28/62 rosters, early pickup, terminal state, and 53 finale phases",
+          "Runtime at or below 50 seconds and fixture growth below the frozen 15 percent budget",
+          "No permission expansion or publication before explicit approval"
+        ],
+        "permission_delta": [],
+        "rollback": "Restore the accepted v31 shared-slot renderer and unequal-duration visible-edge blink while retaining all v31 assets, panel behavior, themes, causal bites, routes, and finale."
+      },
+      {
+        "id": "proposal-turnover-boundary-continuity-v33",
+        "feedback_ids": [
+          "feedback-turnover-boundary-slide-20260818"
+        ],
+        "target_agent": "worker",
+        "author_agent": "coach",
+        "change_target": "shared replacement movement and pose boundary plus deterministic post-reveal continuity checks",
+        "change_level": "task",
+        "status": "accepted",
+        "from_version": 32,
+        "to_version": 33,
+        "cause": "The turnover skip excluded frames strictly inside the outgoing-to-incoming gap but retained the outgoing historyIndex frame at the shared boundary, so its pickup coordinate reappeared after the incoming exact-drop reveal.",
+        "candidate_change": "Skip movement and pose frames at historyIndex equality, reject consecutive visible route keyframes farther apart than one cell plus body allowance, reject unplanned replacement coordinates before bridge completion, and inspect 1.6 seconds after every reveal instead of only the first stable frames.",
+        "discovery_evidence": "The two strict-boundary changes remove the stale pickup keyframes. Fresh SHEEP 06/07 browser frames proceed exact drop to adjacent bridge only, and 10- plus 28-roster probes at 30fps and 120fps report zero velocity spikes across every actor's 1.6-second post-reveal window.",
+        "reproduction": "Run npm run visual:fixture and npm run check, then probe all actors in representative and 10-roster SVGs for 1.6 seconds after reveal at 30fps and 120fps and inspect adjacent 700px SHEEP 06/07 frames.",
+        "primary_metric": "Zero stale outgoing coordinates, non-adjacent visible sheep jumps, or post-reveal velocity spikes across all incoming roster actors.",
+        "prediction": "Removing the shared boundary frame fixes every replacement identity at the common keyframe generator without changing routes, timing, art, or effects.",
+        "expected_delta": {
+          "source_boundary_comparisons_changed": 2,
+          "incoming_velocity_spike_failures_10_roster": 0,
+          "incoming_velocity_spike_failures_28_roster": 0,
+          "fixture_runtime_seconds": 44.863,
+          "new_assets": 0
+        },
+        "falsification_condition": "Reject if any incoming sheep revisits an outgoing pickup coordinate, jumps farther than an adjacent route step, leaves its drop before the UFO body is hidden, changes accepted timing or routing, regresses causal/layout/finale behavior, exceeds 50 seconds, or npm run check fails.",
+        "regression_check": "npm run check plus a fresh independent 700px Gate with exact SHEEP 06/07 frames and 1.6-second 30fps/120fps probes for 10- and 28-roster SVGs.",
+        "transfer_check": "Not applicable; this is a project-local keyframe-boundary defect.",
+        "guardrails": [
+          "Change the shared lifecycle boundary once; do not patch individual sheep IDs",
+          "Preserve the accepted UFO rhythm, exact-drop hold, cleared bridges, art, themes, panel, causal bites, collection, and finale",
+          "No new dependency, asset, effect, permission, or publication",
+          "Keep v32 as the published rollback point until independent promotion"
+        ],
+        "permission_delta": [],
+        "rollback": "Restore the two strict interior comparisons and the accepted v32 deterministic checks."
+      },
+      {
+        "id": "proposal-ranch-tag-relay-v35",
+        "feedback_ids": [
+          "feedback-fast-turnover-ranch-tag-v35-20260818",
+          "feedback-korean-pixel-handoff-v34-20260818"
+        ],
+        "target_agent": "worker",
+        "author_agent": "coach",
+        "change_target": "fast turnover identity and pixel-pasture panel continuity",
+        "change_level": "task",
+        "status": "accepted",
+        "from_version": 33,
+        "to_version": 35,
+        "cause": "Text-led outgoing/incoming cards demanded reading during a roughly 0.62-second exchange and duplicated information already present in roster number, fullness, field actor, and UFO motion.",
+        "candidate_change": "Keep the pinned Galmuri7 Korean panel and restrained pasture perimeter, remove all replacement text cards, assign each roster identity one deterministic 3x3 ranch tag shared by its field actor, selected portrait, and roster slot, cue the next slot 0.54 source seconds before pickup, and leave the selected region empty for 0.08 source seconds between the outgoing and incoming identities.",
+        "discovery_evidence": "Fresh current-source 700px dark/light frames show roster 07 visibly pre-cued while sheep 01 remains full, no fallback sheep in the 0.104-playback-second blank interval, sheep 07 appearing empty before the carrier reaches its remote drop, and the matching tag remaining on the dropped field actor. Current 10/28/62 layouts keep all tags within their two-row cells.",
+        "reproduction": "Run npm run visual:fixture and npm run check, render forced dark/light representative and 10/62 variants at 700px, inspect cue/pickup/blank/incoming/drop/terminal frames, and rerun 30fps/120fps post-reveal actor continuity before independent promotion.",
+        "primary_metric": "At 700px, the next sheep is legible before pickup, the outgoing and incoming identities are separated by one empty beat, and the same unique tag is preserved across field, portrait, and roster with zero text-card or clipping regressions.",
+        "prediction": "A persistent ranch mark plus a pre-cued roster relay will communicate a different sheep faster and with less panel clutter than simultaneous replacement labels.",
+        "expected_delta": {
+          "fixture_bytes": 1851823,
+          "fixture_runtime_seconds": 44.863,
+          "tag_capacity": 492,
+          "unique_tag_samples": 300,
+          "next_cue_playback_seconds": 0.702,
+          "blank_handoff_playback_seconds": 0.104,
+          "replacement_text_cards": 0
+        },
+        "falsification_condition": "Reject if any identity uses mismatched tags across field, selected, or roster; fewer than 300 sampled tags are unique; the next cue starts late; any sheep fills the blank handoff; a replacement text card remains; dense cells clip; an incoming actor slides from a stale coordinate; runtime exceeds 50 seconds; frozen-baseline size is exceeded; or npm run check fails.",
+        "regression_check": "npm run check plus a fresh independent visual Gate over dark/light, reduced motion, 10/28/62 panels, adjacent turnover frames, terminal state, and 30fps/120fps incoming-actor continuity.",
+        "transfer_check": "Not applicable; the ranch tag is a project-specific identity device for this animated SVG.",
+        "guardrails": [
+          "Keep the published v33 assets as rollback until independent promotion",
+          "Reuse the existing contribution palette, panel cells, sheep art, and UFO glyph",
+          "Do not add a longer turnover timeline, text card, new effect layer, dependency, or external request",
+          "Preserve exact-drop actors, causal bites, fixed UFO rhythm, themes, reduced motion, and finale",
+          "No publication or profile write without explicit approval"
+        ],
+        "permission_delta": [],
+        "rollback": "Remove the ranch-tag and roster-cue diff while retaining the accepted v33 motion; restore the published v33 panel if the combined typography candidate fails Gate."
+      },
+      {
+        "id": "proposal-korean-pixel-handoff-v34",
+        "feedback_ids": [
+          "feedback-korean-pixel-handoff-v34-20260818"
+        ],
+        "target_agent": "worker",
+        "author_agent": "coach",
+        "change_target": "panel typography, restrained perimeter, and outgoing/incoming identity handoff",
+        "change_level": "task",
+        "status": "rejected",
+        "from_version": 33,
+        "to_version": 34,
+        "cause": "Generic Korean fallback text weakened the pixel-game language, while extra fence rails and check-shaped energy cargo duplicated state and read as unrelated mobile UI or an object glued to the carrier.",
+        "candidate_change": "Embed the OFL Galmuri7 WOFF2 directly in each SVG; localize the status cells and selected state; retain the existing square contribution grid and prior stepped brown perimeter; remove all V/check and cargo marks; compare 수거 NN 20/20 with 출동 NN 0/20 in two cells; replace the outgoing meter with centred 수거 완료 text after pickup; and preserve a vertical endpoint/body-hidden/remote-endpoint UFO exchange with a smaller clean incoming actor.",
+        "discovery_evidence": "Fresh 700px dark/light frames at 3.76, 3.98, 4.06, 4.10, 4.30, 4.46, 15.00, and terminal time show no text overlap, no attached green part, no V badge, a centred completion label, exact-drop replacement, and a coherent pixel font. Current 10- and 62-roster frames remain unclipped and readable.",
+        "reproduction": "Run npm run visual:fixture and npm run check, render forced dark/light representative and 10/62 variants at 700px, inspect the complete turnover lifecycle, and rerun 30fps/120fps post-reveal actor probes before independent promotion.",
+        "primary_metric": "At 700px, Korean status and handoff text are pixel-styled and unclipped, the two sheep identities read simultaneously, and check/cargo/fence-tile clutter counts remain zero.",
+        "prediction": "Removing duplicate icon metaphors and using one embedded pixel typeface will make the panel feel like the pasture's game UI while the two numbered fullness states communicate replacement more clearly than carrier cargo.",
+        "expected_delta": {
+          "fixture_bytes": 1807390,
+          "fixture_runtime_seconds": 44.863,
+          "embedded_font_bytes": 316404,
+          "external_font_requests": 0,
+          "check_or_cargo_icons": 0,
+          "roster_layouts_checked": 3
+        },
+        "falsification_condition": "Reject if the font falls back or clips at 700px, any V/check/cargo mark remains, the restored perimeter loses section clarity, the dual handoff reads as one sheep, the font asset or OFL record drifts, any incoming actor slides from a stale coordinate, runtime exceeds 50 seconds, frozen-baseline size is exceeded, or npm run check fails.",
+        "regression_check": "npm run check plus a fresh independent visual Gate over dark/light, reduced motion, 10/28/62 panels, adjacent turnover frames, terminal state, and 30fps/120fps incoming-actor continuity.",
+        "transfer_check": "Not applicable; typography and handoff semantics are specific to this 700px GitHub pasture panel.",
+        "guardrails": [
+          "Keep the published v33 assets as rollback until independent promotion",
+          "Use the pinned official Galmuri7 file and include its OFL text; no runtime font request or package dependency",
+          "Preserve the original sheep and UFO art, accepted timing, exact-drop actors, causal bites, themes, and finale",
+          "Do not reintroduce check badges, energy cargo, repeated panel fence tiles, or another effect layer",
+          "No publication or profile write without explicit approval"
+        ],
+        "permission_delta": [
+          "Download and vendor the user-requested OFL Galmuri7 asset from official commit 71e1cacf1437a11220307120e63e30bc275312d4"
+        ],
+        "rollback": "Remove the embedded font and v34 panel/handoff diff, restoring the published v33 panel and turnover endpoint path."
+      },
+      {
+        "id": "proposal-simple-color-tag-panel-v36",
+        "feedback_ids": [
+          "feedback-simple-color-tag-panel-v36-20260818"
+        ],
+        "target_agent": "worker",
+        "author_agent": "coach",
+        "change_target": "sheep tag simplicity, panel width allocation, and selected visibility",
+        "change_level": "task",
+        "status": "accepted",
+        "from_version": 35,
+        "to_version": 36,
+        "cause": "The 3x3 bit pattern and per-slot fullness bars duplicated the roster number and selected meter, while the right-only header and linear visibility timing weakened the panel hierarchy and made a discrete lifecycle change read like fading.",
+        "candidate_change": "Replace the shared 3x3 mark with one square cycling across the four contribution levels, keep the roster number as identity, remove compact roster meters, equally divide x=10–650 among 방목·양떼·잔디, space the selected sheep/tag/number/fullness and square two-row roster across their available widths, and use step-end for discrete panel visibility while preserving the intentional next-slot cue fade.",
+        "discovery_evidence": "Fresh current-source 700px dark/light frames at the first turnover show the outgoing selected sheep and incoming replacement switching around the same v35 blank beat without an opacity blend. Representative, 10-, and 62-roster frames show square numbered cells reaching both endpoints with four visible palette levels and no compact bars.",
+        "reproduction": "Run npm run visual:fixture and npm run check, render forced dark/light and reduced-motion representative plus 10/62 variants at 700px, inspect cue/outgoing/blank/incoming/drop/middle/terminal frames, sample selected opacity at every keyframe boundary, and rerun 30fps/120fps post-reveal continuity before independent promotion.",
+        "primary_metric": "At 700px, each shared tag is one colored square, the status and lower rows use their full widths without duplicated fullness or clipping, and selected visibility has zero intermediate opacity samples while the accepted v35 handoff remains unchanged.",
+        "prediction": "Removing the internal tag grid and compact meters while allocating the complete panel width will improve immediate readability without changing motion, identity lifecycle, or runtime.",
+        "expected_delta": {
+          "fixture_bytes": 1780059,
+          "fixture_runtime_seconds": 44.863,
+          "tag_rectangles_per_actor": 1,
+          "tag_color_levels": 4,
+          "compact_roster_meters": 0,
+          "status_left_x": 10,
+          "status_right_x": 650,
+          "roster_left_x": 212,
+          "roster_right_x": 650,
+          "intermediate_selected_opacity_samples": 0
+        },
+        "falsification_condition": "Reject if any tag is not square or loses its shared color across field, selected, and roster; fewer than four contribution colors render; the selected actor fades; compact roster fullness returns; the three status cells do not span x=10–650 equally; square roster endpoints drift from x=212–650; cue or blank handoff timing changes; dense cells clip; incoming continuity fails; runtime exceeds 50 seconds; the size guardrail fails; or npm run check fails.",
+        "regression_check": "npm run check plus a fresh independent visual Gate over dark/light, reduced motion, 10/28/62 panels, adjacent turnover frames, terminal state, selected opacity boundaries, and 30fps/120fps incoming-actor continuity.",
+        "transfer_check": "Not applicable; this is a project-specific 700px pasture panel correction.",
+        "guardrails": [
+          "Keep published v35 as the external rollback until the existing workflow publishes v36",
+          "Preserve the v35 next-slot cue, blank handoff, exact-drop field actor, fixed UFO rhythm, causal bites, themes, reduced motion, and finale",
+          "Use only existing contribution colors, sheep art, panel cells, and number labels",
+          "Do not add another identity shape, effect layer, dependency, text card, or timeline delay",
+          "No publication or profile write without explicit approval"
+        ],
+        "permission_delta": [],
+        "rollback": "Revert the v36 tag and panel-layout diff to the published v35 3x3-tag panel while retaining all v35 motion and continuity behavior."
+      },
+      {
+        "id": "proposal-readable-dense-horizontal-fullness-v39",
+        "feedback_ids": [
+          "feedback-horizontal-fullness-colored-ear-tags-v38-20260818"
+        ],
+        "target_agent": "worker",
+        "author_agent": "coach",
+        "change_target": "make the restored ten-cell meter readable in the dense 62-roster layout",
+        "change_level": "task",
+        "status": "rejected",
+        "from_version": 37,
+        "to_version": 39,
+        "cause": "The rejected v38 mechanism restored the correct meter but spent over half of each 11.13px dense card on padding and a 1.8px tag, leaving only 5.33px for ten cells and a 3.61px number at 700px.",
+        "candidate_change": "Keep the same restored compact meter and identity mapping, but allocate each dense card almost its complete column pitch, reduce only its internal edge/gap budget, use a 1.4px tag, reserve at least about 11.8px for the ten-cell meter in the 62-roster fixture, and raise the two-digit label floor to 4.5px. Sparse cards retain their larger sizes.",
+        "discovery_evidence": "The independent v38 Gate measured the 62-roster meter at 5.33 logical px with 0.41px cells and the label at 3.61px, while the same 10/28 mechanism passed. The width loss is therefore card geometry, not the meter, tag mapping, or motion lifecycle.",
+        "reproduction": "Render fresh 700px and 3x dark/light 62-roster early, middle, and terminal frames, measure dense card, tag, meter, cell, gap, and label widths, then rerun the complete v38 check, reduced motion, selected opacity, and 30fps/120fps continuity under a fresh independent Gate.",
+        "primary_metric": "In the 62-roster 700px frame, every two-digit label is readable and each adjacent tag-plus-meter row exposes ten visually separated horizontal cells, while the cards still span x=212–650 in two rows without overlap or clipping.",
+        "prediction": "Recovering the card's wasted horizontal space will more than double dense meter width and clear the only v38 blocker without changing the accepted 10/28 result or any timeline.",
+        "expected_delta": {
+          "fixture_bytes": 1800202,
+          "fixture_runtime_seconds": 44.863,
+          "dense_meter_min_width_px": 11.5,
+          "dense_label_min_font_px": 4.5,
+          "horizontal_fullness_cells_per_roster_actor": 10,
+          "representative_unique_tag_colors": 28,
+          "roster_left_x": 212,
+          "roster_right_x": 650
+        },
+        "falsification_condition": "Reject if the 62-roster ten cells or two-digit labels remain unreadable at 700px; cards, tags, meters, or outlines overlap or clip; x endpoints drift; the accepted 10/28 layouts worsen; identity mapping, ear attachment, bite progress, selected meter, handoff, continuity, themes, reduced motion, finale, size, runtime, or npm run check regresses.",
+        "regression_check": "npm run check plus a fresh independent visual Gate over measured 62-roster readability, 3x and 700px dark/light, reduced motion, early/late 10/28/62 progress, tag matching, selected opacity, handoff frames, and 30fps/120fps continuity.",
+        "transfer_check": "Not applicable; this is a project-specific dense-panel geometry correction.",
+        "guardrails": [
+          "Do not change the user's restored ten-cell encoding or varied-color tag mapping",
+          "Preserve the v38 10/28 layouts and v36 x=212–650 two-row space-between endpoints",
+          "Preserve v37 ear attachment, full-width header, snap visibility, and all accepted motion",
+          "Add no row, scroll, cap, effect, dependency, or timeline change",
+          "No publication or profile write without explicit approval"
+        ],
+        "permission_delta": [],
+        "rollback": "Discard the v39 dense geometry adjustment and retain accepted v37; the rejected v38 evidence remains archived for diagnosis."
+      },
+      {
+        "id": "proposal-horizontal-fullness-colored-ear-tags-v38",
+        "feedback_ids": [
+          "feedback-horizontal-fullness-colored-ear-tags-v38-20260818"
+        ],
+        "target_agent": "worker",
+        "author_agent": "coach",
+        "change_target": "restore per-roster horizontal fullness while preserving the v36 layout-only changes and v37 ear placement",
+        "change_level": "task",
+        "status": "rejected",
+        "from_version": 37,
+        "to_version": 38,
+        "cause": "The prior correction changed the fullness encoding instead of only rearranging the existing roster cards, and reused contribution greens for identity despite the request for individually varied colors.",
+        "candidate_change": "Restore v35's compact ten-cell roster meter and rectangular card, place a one-square tag immediately to its left, calculate exact first/last-card space-between positions over x=212–650, retain the v37 ear-attached tag and selected meter, and replace the four repeating green codes with deterministic unique HSL hues across the reachable roster capacity.",
+        "discovery_evidence": "The v35 renderer already owns the required compact meter and recorded-bite clip, so the correction can reuse it instead of inventing another progress encoding. The current candidate renders ten distinct cells plus one adjacent tag per roster actor and produces 300 unique deterministic hue codes with one rectangle per tag.",
+        "reproduction": "Run npm run visual:fixture and npm run check, render fresh 3x and 700px dark/light and reduced-motion representative frames plus 10/62 variants, compare early and late meter progress, verify tag mappings and x endpoints, sample selected opacity, rerun 30fps/120fps post-reveal continuity, and require an independent Gate.",
+        "primary_metric": "Every roster actor shows exactly ten horizontal bite-driven fullness cells with its distinct non-contribution-green identity tag directly beside them, while 10/28/62 two-row layouts span x=212–650 without overlap or clipping and the same tag remains attached to the sheep ear.",
+        "prediction": "Restoring the previously accepted meter and changing only its placement plus tag color will match the user's intended visual encoding without changing motion or runtime.",
+        "expected_delta": {
+          "fixture_bytes": 1800202,
+          "fixture_runtime_seconds": 44.863,
+          "horizontal_fullness_cells_per_roster_actor": 10,
+          "representative_unique_tag_colors": 28,
+          "tag_color_capacity": 360,
+          "roster_left_x": 212,
+          "roster_right_x": 650,
+          "intermediate_selected_opacity_samples": 0
+        },
+        "falsification_condition": "Reject if fullness remains a whole-square fill or is not ten discrete horizontal cells; the tag is not beside the cells, repeats within the reachable roster, returns to contribution-green-only colors, mismatches across field/selected/roster, or leaves the ear; 10/28/62 spacing clips or misses x=212–650; selected visibility, cue, blank handoff, exact-drop actor, continuity, themes, reduced motion, finale, size, runtime, or npm run check regresses.",
+        "regression_check": "npm run check plus a fresh independent visual Gate over 3x and 700px dark/light, reduced motion, early/late 10/28/62 meter progress, tag identity matching, selected opacity, handoff frames, and 30fps/120fps incoming continuity.",
+        "transfer_check": "Not applicable; this is a project-specific correction to the 700px pasture panel.",
+        "guardrails": [
+          "Preserve the user's v35 ten-cell horizontal fullness encoding; change arrangement only",
+          "Preserve v36 full-width status cells, snap visibility, and x=212–650 two-row space-between distribution",
+          "Preserve v37 ear attachment and shared field/selected/roster identity mapping",
+          "Use the existing compact meter, recorded-bite clips, and one-square tag; add no effect layer, dependency, or timeline change",
+          "Preserve the v35 cue, blank handoff, exact-drop actor, fixed UFO rhythm, causal bites, themes, reduced motion, and finale",
+          "No publication or profile write without explicit approval"
+        ],
+        "permission_delta": [],
+        "rollback": "Revert the v38 roster-card and HSL tag changes to the accepted local v37 square-fill panel; published v36 remains the external rollback."
+      },
+      {
+        "id": "proposal-ear-tag-roster-fullness-v37",
+        "feedback_ids": [
+          "feedback-ear-tag-roster-fullness-v37-20260818"
+        ],
+        "target_agent": "worker",
+        "author_agent": "coach",
+        "change_target": "field and selected tag attachment plus square-roster fullness",
+        "change_level": "task",
+        "status": "accepted",
+        "from_version": 36,
+        "to_version": 37,
+        "cause": "The v36 tag used body-local coordinates instead of the existing head lifecycle, so it read as a wool sticker; removing the tiny per-slot meters left roster progress static even though the exact bite clip already existed.",
+        "candidate_change": "Nest the existing one-square field tag beside the left ear and drive it with the existing sheep-head animation, align the selected portrait tag to the same ear, and reuse each flock-progress clip to fill the numbered roster square itself from left to right. Keep the selected exact ten-cell meter, v36 spacing, and every motion timeline unchanged.",
+        "discovery_evidence": "Source tracing found the field tag appended after SHEEP_CONTENT at (9, 6.3), outside sheep-head, while flock-progress already encoded every identity's bite history. Fresh frames show the relocated ear mark and progressive square fill without adding a new meter or motion layer.",
+        "reproduction": "Run npm run visual:fixture and npm run check, render 3x and 700px forced dark/light and reduced-motion representative frames plus 10/62 variants, inspect head-nod attachment and roster progress, sample selected opacity, rerun 30fps/120fps post-reveal continuity, and require an independent Gate before promotion.",
+        "primary_metric": "At 700px the 1x1 mark reads at the left ear and tracks the head instead of the wool, while every numbered roster square visibly fills only from recorded bites without obscuring its number/color or losing the v36 layout.",
+        "prediction": "Reusing the existing head and fullness tracks will answer both corrections with no new animation, meter component, dependency, or runtime.",
+        "expected_delta": {
+          "fixture_bytes": 1790045,
+          "fixture_runtime_seconds": 44.863,
+          "field_tag_x": 3,
+          "field_tag_y": 4.55,
+          "field_tag_size": 2.1,
+          "representative_roster_fullness_rects": 28,
+          "compact_roster_meters": 0,
+          "intermediate_selected_opacity_samples": 0
+        },
+        "falsification_condition": "Reject if a field or selected tag reads as body-attached or separates from the head pose; roster fill is not bite-driven, hides a number/color, or restores compact per-slot meters; v36 header or roster spacing changes; cue, blank handoff, exact-drop actor, continuity, theme, reduced-motion, finale, runtime, size, or npm run check regresses.",
+        "regression_check": "npm run check plus a fresh independent visual Gate over 3x and 700px dark/light, reduced motion, 10/28/62 layouts, selected opacity, handoff frames, and 30fps/120fps incoming continuity.",
+        "transfer_check": "Not applicable; this is a project-specific 700px pasture identity and fullness correction.",
+        "guardrails": [
+          "Preserve the v36 one-square four-color identity and full-width space-between layout",
+          "Reuse the existing sheep-head and flock-progress tracks instead of adding effects or timing",
+          "Keep the selected exact 포만 n/20 plus ten cells and do not restore compact per-slot meters",
+          "Preserve the v35 cue, blank handoff, exact-drop actor, fixed UFO rhythm, causal bites, themes, reduced motion, and finale",
+          "No publication or profile write without explicit approval"
+        ],
+        "permission_delta": [],
+        "rollback": "Revert the v37 ear wrapper and roster fullness rect to the published v36 static square panel while retaining all v36 behavior."
+      },
+      {
+        "id": "proposal-cardless-focus-roster-v45",
+        "feedback_ids": [
+          "feedback-cardless-focus-roster-v45-20260819"
+        ],
+        "target_agent": "worker",
+        "author_agent": "coach",
+        "change_target": "replace roster cards with focused pasture-cell tokens",
+        "change_level": "task",
+        "status": "accepted",
+        "from_version": 44,
+        "to_version": 45,
+        "cause": "Permanent labels and four overlapping rectangular state outlines made the roster read as miniature cards even though its surrounding panel had become one pasture grid.",
+        "candidate_change": "Render normal roster identities as borderless 10x10 rx2 level-0 pasture cells aligned to the panel's 12px grid, with recorded fullness clipped left to right and the existing identity hue reduced to a 2px top-right mark. Remove permanent visual labels and full-box state outlines. Reuse the existing selected visibility track to show only the focused sheep's centered two-digit number and one external four-corner cursor; reduce ready, active, and extracting states to short line marks rather than boxes. Distribute up to 36 columns across the 36 reachable panel-grid positions and retain an uncapped shrinking fallback above that density.",
+        "discovery_evidence": "The existing progress clip, selected keyframes, ready cue, and tag helper already supply every required state. Removing strokes and moving their geometry to small marks is smaller and more coherent than introducing another token component or animation.",
+        "reproduction": "Run npm run visual:fixture and npm run check; inspect native and 3x dark/light 10/28/62 frames at empty, partial, focus, ready, extracting, collected, handoff, reduced, and terminal states; verify only focused numbers are visually present, all normal cells align to panel grid coordinates, fullness clips left to right, identity marks remain 2px, and continuity/opacity probes stay green; require a fresh independent Gate.",
+        "primary_metric": "At 700px the roster reads as two rows of pasture cells rather than cards: normal cells have no border or number, one focused cell has an external corner cursor plus legible number, and 10/28/62 layouts remain clear.",
+        "prediction": "Deleting card borders and permanent labels will lower visual density while the focus cursor, left selected panel, and identity corner retain all useful orientation.",
+        "expected_delta": {
+          "fixture_bytes": 1809731,
+          "normal_roster_cell_size": 10,
+          "normal_roster_cell_radius": 2,
+          "normal_roster_card_borders": 0,
+          "persistent_roster_numbers": 0,
+          "focused_roster_numbers": 1,
+          "identity_marker_size": 2,
+          "aligned_roster_grid_positions": 36,
+          "new_motion_tracks": 0
+        },
+        "falsification_condition": "Reject if normal roster items still look like bordered cards; more than the focused number is visible; the cursor becomes a full box; 10/28/62 cells leave the panel grid or overlap; identity, fullness, cue, active/extracting/collected state, shared panel surface, fence, health gauge, handoff, reduced motion, finale, size, runtime, or npm run check regresses.",
+        "regression_check": "npm run check plus a fresh independent visual Gate over focus visibility, cardless cell geometry, 10/28/62 density, progress and state marks, dark/light, handoff, reduced motion, terminal state, selected opacity, and 30fps/120fps reveal continuity.",
+        "transfer_check": "Not applicable; this is a project-specific roster rendering correction.",
+        "guardrails": [
+          "Remove card borders and persistent numbers rather than restyling them",
+          "Reuse the panel's exact 10px rx2 cells and 12px grid positions whenever density permits",
+          "Keep one external corner cursor and number only for the focused sheep",
+          "Preserve bite-driven horizontal fullness, 2px identity markers, uncapped two-row capacity, and all accepted motion",
+          "Add no dependency, extra row, tooltip, secondary legend, or animation track",
+          "Keep the candidate local until explicit push approval"
+        ],
+        "permission_delta": [],
+        "rollback": "Restore the v44 adaptive 13.87–16px bordered squares, permanent labels, and full-box active/extracting/selected outlines."
+      },
+      {
+        "id": "proposal-unified-panel-grid-v44",
+        "feedback_ids": [
+          "feedback-unified-panel-grid-v44-20260819"
+        ],
+        "target_agent": "worker",
+        "author_agent": "coach",
+        "change_target": "make the panel one aligned continuation of the pasture grid",
+        "change_level": "task",
+        "status": "accepted",
+        "from_version": 43,
+        "to_version": 44,
+        "cause": "The panel's 78px height broke the 12px fence rhythm at 66px, while its inset, translucent cell pattern, and opaque free-form cards used a second layout language.",
+        "candidate_change": "Set the panel to 84px so its lower fence lands at 72px, extend the SVG canvas by the same 6px, render a full-opacity 53x5 panel grid at the pasture's exact 12px inset/pitch and level-0 palette, and overlay only grid-aligned merged cells: 18/17/18-column status regions plus separate 8/9-column selected and fullness regions. Keep the v43 five-block gauge and the v42 two-row square roster, shifting the roster boundary to the aligned x=216–646 interior.",
+        "discovery_evidence": "Changing 78 to the next compatible 84px height fixes the fence at its shared builder rather than painting over the corner symptom. The existing panel pattern and rectangles already provide every primitive needed; only their pitch, fill, and geometry change, with no new component or animation.",
+        "reproduction": "Run npm run visual:fixture and npm run check; inspect native and 3x dark/light representative plus 10/62 frames, both lower corners, exact 12px insets, merged-cell boundaries, selected 0/4/18/20 health states, handoff, reduced motion, and terminal state; rerun selected-opacity and 30fps/120fps continuity probes; require a fresh independent Gate.",
+        "primary_metric": "At 700px the panel reads as the same 53-column pasture grid enclosed by an evenly spaced fence, with regular lower corners and five clearly merged information regions while the health gauge, roster, and motion stay readable.",
+        "prediction": "One shared cell pitch and palette will remove the detached dashboard feeling, while the aligned 84px fence geometry will eliminate the bottom-corner breaks without altering the pasture fence.",
+        "expected_delta": {
+          "fixture_bytes": 1807628,
+          "panel_height": 84,
+          "panel_fence_bottom_y": 72,
+          "panel_grid_columns": 53,
+          "panel_grid_rows": 5,
+          "panel_grid_inset": 12,
+          "field_status_column_span": 18,
+          "flock_status_column_span": 17,
+          "grass_status_column_span": 18,
+          "selected_column_span": 8,
+          "fullness_column_span": 9,
+          "selected_health_segments": 5,
+          "new_motion_tracks": 0
+        },
+        "falsification_condition": "Reject if the lower fence still has an oversized corner gap; the panel grid does not match the pasture's pitch, inset, rounded cells, or level-0 palette; merged regions float off-grid or recreate nested cards; header, selected identity, five-block health fill, 10/28/62 roster, handoff, reduced motion, finale, size, runtime, or npm run check regresses.",
+        "regression_check": "npm run check plus a fresh independent visual Gate over fence continuity, shared-grid geometry, merged regions, dark/light and reduced motion, 10/28/62 roster density, 0/4/18/20 health states, selected opacity, and 30fps/120fps reveal continuity.",
+        "transfer_check": "Not applicable; this is a project-specific panel layout correction.",
+        "guardrails": [
+          "Reuse the pasture's 12px pitch, 12px inset, 10px rounded level-0 cells, and existing fence builder",
+          "Merge aligned cells rather than adding nested cards or a new frame language",
+          "Keep the accepted five-block horizontal health gauge, identity markers, two-row square roster, and all motion",
+          "Add no dependency, effect, row cap, secondary bar, or animation track",
+          "Keep the candidate local until explicit push approval"
+        ],
+        "permission_delta": [],
+        "rollback": "Restore the v43 78px panel, 8px translucent pattern, equal free-form header thirds, x=212–650 roster, and single 188px selected surface."
+      },
+      {
+        "id": "proposal-selected-health-bar-v43",
+        "feedback_ids": [
+          "feedback-selected-health-bar-v43-20260819"
+        ],
+        "target_agent": "worker",
+        "author_agent": "coach",
+        "change_target": "make selected fullness read as a game-character health gauge",
+        "change_level": "task",
+        "status": "accepted",
+        "from_version": 42,
+        "to_version": 43,
+        "cause": "The selected meter reused contribution-grid geometry, so its ten small equal cells looked like more grass data instead of a distinct character stat.",
+        "candidate_change": "Replace only the selected meter symbol with five wide fixed blocks inside a restrained dark shell, retain the existing recorded-bite scaleX clip for continuous left-to-right and partial-block fill, and use the standard contribution greens with a subtle vertical health-fill gradient. Keep exact 포만 n/20 and its adjacent identity swatch. Do not add the reference image's unrelated blue secondary bar.",
+        "discovery_evidence": "The existing selected meter already owns the correct bite-driven clip and pulse, so only its shared symbol and shell need to change. Five blocks map naturally to the 20-point capacity at four points per block while continuous clipping preserves every intermediate value.",
+        "reproduction": "Run npm run visual:fixture and npm run check; capture native and 3x dark/light frames for 0/20, partial, 18/20, and 20/20 selected states; inspect reduced motion, 10/28/62 square rosters, unchanged header and handoff; sample selected opacity and run 30fps/120fps incoming continuity; require a fresh independent Gate before promotion.",
+        "primary_metric": "At 700px the selected stat reads as one five-block character health bar, with four full blocks plus a visibly partially filled fifth at 18/20, while exact text, adjacent tag, roster, header, and all motion remain unchanged.",
+        "prediction": "Five broad separated blocks and a single dark rail will establish the requested game-HUD hierarchy without adding another metric, component family, or animation.",
+        "expected_delta": {
+          "fixture_bytes": 1807718,
+          "fixture_runtime_seconds": 44.863,
+          "selected_health_segments": 5,
+          "selected_fullness_capacity": 20,
+          "selected_partial_block_support": true,
+          "compact_roster_meters": 0,
+          "new_motion_tracks": 0
+        },
+        "falsification_condition": "Reject if the gauge still reads as ten small contribution cells; does not expose five broad blocks, partial final fill, or horizontal progression; the shell or gradient clashes with GitHub light/dark palettes; the tag, text, status, roster, header, handoff, reduced motion, finale, size, runtime, or npm run check regresses; or an unrelated second bar appears.",
+        "regression_check": "npm run check plus a fresh independent visual Gate over selected health states, native and 3x dark/light, reduced motion, unchanged 10/28/62 roster/header, selected opacity, and 30fps/120fps post-reveal continuity.",
+        "transfer_check": "Not applicable; this is a project-specific selected-panel rendering correction.",
+        "guardrails": [
+          "Change only the selected fullness gauge; keep the accepted v42 header, square roster, identity markers, and motion",
+          "Keep exact 포만 n/20 and continuous bite-driven left-to-right fill",
+          "Use five fixed health blocks in one restrained shell and no unexplained secondary bar",
+          "Reuse the existing progress clip and pulse; add no dependency or timing",
+          "Keep the candidate local until explicit push approval"
+        ],
+        "permission_delta": [],
+        "rollback": "Restore the v42 ten-cell selected meter symbol and remove the health shell/gradient; all v42 roster and identity behavior remains untouched."
+      },
+      {
+        "id": "proposal-clean-square-roster-corner-tags-v42",
+        "feedback_ids": [
+          "feedback-clean-grid-corner-tags-v42-20260818"
+        ],
+        "target_agent": "worker",
+        "author_agent": "coach",
+        "change_target": "restore the clean square roster while limiting varied identity color to small markers",
+        "change_level": "task",
+        "status": "accepted",
+        "from_version": 37,
+        "to_version": 42,
+        "cause": "The prior attempts changed the accepted roster encoding instead of only arranging the existing selected fullness and tag, then made identity color dominate the grid instead of serving as a small identifier.",
+        "candidate_change": "Restore v37's two-row square roster and bite-driven left-to-right square fill, keep the existing selected ten-cell horizontal meter and full-width status row, retain the ear-attached head-following tag, and use each unique HSL identity only for the ear, a small swatch immediately left of the selected meter, and a small top-right roster-corner marker.",
+        "discovery_evidence": "The accepted v37 frame directly supplies the requested clean grid, existing flock-progress clips already drive left-to-right square fill, and one existing buildSheepTagSvg call supplies each additional marker without a new component, animation, or timeline.",
+        "reproduction": "Run npm run visual:fixture and npm run check; inspect fresh native 700px and 3x dark/light 10/28/62 frames at empty, partial, and full progress; verify top-right marker geometry and tag mapping; inspect reduced motion and terminal state; sample selected opacity; run every incoming reveal for 1.6 seconds at 30fps and 120fps; require a fresh independent Gate before push.",
+        "primary_metric": "At 700px, the panel matches the clean square-grid reference: one original selected ten-cell horizontal meter, green numbered roster squares filling left to right, and only a small matching varied-color identity mark at the ear, selected meter, and each square's top-right corner, with the status row unchanged.",
+        "prediction": "Returning to the accepted square grid and restricting hues to corner-sized marks will preserve the user's preferred visual hierarchy while satisfying distinct per-sheep identity with less rendering and no motion change.",
+        "expected_delta": {
+          "fixture_bytes": 1803485,
+          "fixture_runtime_seconds": 44.863,
+          "selected_horizontal_fullness_cells": 10,
+          "representative_roster_fullness_rects": 28,
+          "compact_roster_meters": 0,
+          "representative_unique_tag_colors": 28,
+          "tag_color_capacity": 360,
+          "roster_left_x": 212,
+          "roster_right_x": 650,
+          "intermediate_selected_opacity_samples": 0
+        },
+        "falsification_condition": "Reject if the selected meter is not ten discrete horizontal cells or fills vertically; roster cards are not square, are colored wholesale by identity, do not fill left to right from bites, hide their numbers, lose a corner marker, repeat or mismatch a reachable identity color, clip or miss x=212–650; the status row changes; ear attachment, cue, blank handoff, exact-drop actor, continuity, themes, reduced motion, finale, size, runtime, or npm run check regresses.",
+        "regression_check": "npm run check plus a fresh independent visual Gate over native and 3x dark/light 10/28/62 progress states, marker mapping and geometry, unchanged header, reduced motion, terminal state, selected opacity, and 30fps/120fps post-reveal continuity.",
+        "transfer_check": "Not applicable; this is a project-specific correction to the 700px pasture panel.",
+        "guardrails": [
+          "Keep the user's accepted v37 square-grid visual hierarchy and selected ten-cell horizontal meter",
+          "Keep identity hues out of the green fullness surfaces and use them only as small markers",
+          "Preserve full-width 방목·양떼·잔디, x=212–650 endpoints, two rows, snap visibility, and all accepted motion",
+          "Reuse existing progress clips and tag helper; add no meter variant, effect, dependency, row, cap, or timeline change",
+          "Push only after the fresh independent Gate accepts the candidate"
+        ],
+        "permission_delta": [
+          "Push the Gate-accepted v42 source commit to the project main branch as explicitly requested by the user"
+        ],
+        "rollback": "Revert the v42 HSL tag and roster-corner calls while retaining accepted v37 square fullness; published v36 remains the external rollback until automation republishes the accepted asset."
+      },
+      {
+        "id": "proposal-raster-readable-dense-meter-v40",
+        "feedback_ids": [
+          "feedback-clean-grid-corner-tags-v42-20260818"
+        ],
+        "target_agent": "worker",
+        "author_agent": "coach",
+        "change_target": "make all ten dense fullness cells survive 700px rasterization without overlapping card outlines",
+        "change_level": "task",
+        "status": "rejected",
+        "from_version": 37,
+        "to_version": 40,
+        "cause": "V39 widened the dense meter to 11.83px but retained subpixel gaps and nearly zero card spacing; the Gate measured only three bright raster runs at full progress and geometric overlap between 0.7–1.5px outlines across a 0.103px gap.",
+        "candidate_change": "Restore the already-passing v38 geometry for 10/28 rosters. Only above 20 columns, inset internal card edges by 0.3px, reduce state strokes to at most 0.6px, and use a dense ten-cell symbol whose roughly 1px adjacent cells alternate opacity so every cell boundary survives even when the 0.1px physical gap rasterizes away. Keep at least 11.5px of meter width and the 4.5px label floor.",
+        "discovery_evidence": "The v39 Gate inspected actual pixels rather than only DOM geometry: a nominal ten-rect full meter produced three bright runs, and card strokes overlapped. Alternating adjacent one-pixel cells supplies a raster-visible boundary independent of subpixel whitespace, while edge insets make the maximum dense stroke smaller than the remaining card gap.",
+        "reproduction": "At native 700px inspect and pixel-sample full 62-roster meters in dark and light: each must expose ten alternating cell runs, two-digit labels, and nonoverlapping card/state boundaries. Then inspect 10/28 unchanged geometry, 3x identity placement, reduced motion, meter progress, selected opacity, and 30fps/120fps continuity under a fresh Gate.",
+        "primary_metric": "A full 62-roster meter produces ten distinguishable raster cells at native 700px and adjacent dense card outlines do not geometrically overlap, while all sparse and motion guardrails remain unchanged.",
+        "prediction": "Encoding cell boundaries with alternating one-pixel luminance instead of subpixel whitespace and insetting dense outlines will clear both measured v39 blockers without adding width, rows, or motion.",
+        "expected_delta": {
+          "fixture_runtime_seconds": 44.863,
+          "dense_meter_min_width_px": 11.5,
+          "dense_cell_min_width_px": 1,
+          "dense_label_min_font_px": 4.5,
+          "dense_max_state_stroke_px": 0.6,
+          "horizontal_fullness_cells_per_roster_actor": 10,
+          "representative_unique_tag_colors": 28
+        },
+        "falsification_condition": "Reject if a full dense meter produces fewer than ten visually distinct native-resolution cells; dense base or state outlines overlap; labels or tags disappear; 10/28 geometry changes; cards clip or lose x=212–650 endpoints; identity mapping, ear attachment, bite progress, selected meter, handoff, continuity, themes, reduced motion, finale, size, runtime, or npm run check regresses.",
+        "regression_check": "npm run check plus native-pixel and visual Gate checks over 62-roster dark/light, unchanged 10/28 layouts, 3x ear tags, reduced motion, progress states, selected opacity, handoff frames, and 30fps/120fps continuity.",
+        "transfer_check": "Not applicable; this is a project-specific dense SVG rasterization correction.",
+        "guardrails": [
+          "Keep the user's ten horizontal cells, adjacent varied-color tag, and two-row roster",
+          "Do not change the accepted 10/28 card geometry",
+          "Add no row, cap, scroll, effect, dependency, or timeline change",
+          "Preserve x=212–650 endpoints, v37 ear attachment, full-width header, snap visibility, and all accepted motion",
+          "No publication or profile write without explicit approval"
+        ],
+        "permission_delta": [],
+        "rollback": "Discard the v40 dense-only symbol and inset geometry and retain accepted v37; keep both rejected dense raster traces as future evidence."
+      },
+      {
+        "id": "proposal-tracking-pasture-map-v48",
+        "feedback_ids": [
+          "feedback-tracking-pasture-map-v48-20260819"
+        ],
+        "target_agent": "worker",
+        "author_agent": "coach",
+        "change_target": "replace roster UI with an activity map and actual-grid tracking camera",
+        "change_level": "task",
+        "status": "accepted",
+        "from_version": 45,
+        "to_version": 48,
+        "cause": "Per-identity slot geometry duplicated the upper game scene and made the lower panel feel like a roster display. A twenty-cell line and miniature sheep added density without improving control-surface feedback, while abrupt selected changes lacked spatial continuity.",
+        "candidate_change": "Delete roster output. Restore ten separated selected fullness cells. Project every recorded bite into a fixed 36x4 contribution-green map with one latest-bite cursor and pulse. Reuse the actual source contribution grid inside an 82x34 clipped left camera, keep the original 30x25 tagged sheep centered, and pan only during the final 0.14 source seconds before selected spawn or bite targets. Reuse each sheep's selected visibility track so only its already-eaten map cells expose two 1.5px low-opacity identity footprints; hide camera and footprints at completion.",
+        "discovery_evidence": "The source grid, recorded bite cells, selected snap tracks, existing sheep art, tag hue helper, and map cursor primitives already provide every needed input. Reusing them removes roster code and adds no dependency, actor, legend, or independent effect layer.",
+        "reproduction": "Run npm run visual:fixture and npm run check; inspect native and 3x dark/light representative plus 10/62 frames at initial, partial, handoff, late, reduced, and terminal states; verify camera spawn/bite targets, exact ten-cell fullness, fixed map geometry, current-only past footprints, terminal cleanup, selected opacity, and 30fps/120fps reveal continuity; require a fresh independent Gate.",
+        "primary_metric": "At 700px the lower panel reads as one interactive pasture controller: the left selected sheep inhabits a real moving grid crop, the right fixed map accumulates spatial bite history, and only two tiny current-identity dots add attribution without restoring roster density.",
+        "prediction": "Replacing identities with spatial activity and reusing the real grid in the camera will keep the panel full and interactive while removing roster/card repetition and making selected transitions feel intentional.",
+        "expected_delta": {
+          "fixture_bytes": 1991724,
+          "fixture_runtime_seconds": 44.863,
+          "selected_fullness_cells": 10,
+          "map_columns": 36,
+          "map_rows": 4,
+          "camera_width": 82,
+          "camera_height": 34,
+          "camera_pan_max_source_seconds": 0.14,
+          "footprints_per_bite": 2,
+          "roster_items": 0,
+          "new_dependencies": 0
+        },
+        "falsification_condition": "Reject if the camera does not use the real contribution grid or selected spawn/bite targets; the sheep drifts from camera centre; the map becomes identity-colored; future, non-selected, or terminal footprints appear; the meter is not ten discrete horizontal cells; any roster or miniature flock returns; or accepted handoff, panel, fence, motion, theme, finale, size, runtime, or continuity checks regress.",
+        "regression_check": "npm run check plus a fresh independent visual Gate over camera targeting, fixed map and footprint visibility, ten-cell fullness, dark/light 10/28/62 density, handoff, reduced motion, terminal state, selected opacity, and 30fps/120fps reveal continuity.",
+        "transfer_check": "Not applicable; this is a project-specific panel rendering correction.",
+        "guardrails": [
+          "Reuse the actual source grid, recorded bite cells, original sheep, selected tracks, and tag hue",
+          "Keep map history contribution-green and identity attribution to two restrained current-sheep dots",
+          "Keep exactly ten separated selected fullness cells and no roster geometry",
+          "Hide camera, selected content, pulse, and footprints at completion while retaining map history",
+          "Add no dependency, legend, miniature actor set, secondary map, or continuous camera-follow system",
+          "Keep the candidate local until explicit push approval"
+        ],
+        "permission_delta": [],
+        "rollback": "Restore the v45 cardless focus roster and remove the tracking camera, fixed bite map, and footprint overlays."
+      },
+      {
+        "id": "proposal-live-hero-camera-v49",
+        "feedback_ids": [
+          "feedback-live-hero-camera-v49-20260819"
+        ],
+        "target_agent": "worker",
+        "author_agent": "coach",
+        "change_target": "replace rapid selected-camera cuts with a live hero pasture camera",
+        "change_level": "task",
+        "status": "accepted",
+        "from_version": 48,
+        "to_version": 49,
+        "cause": "The v48 crop reused the grid but still rendered a separate selected actor and retargeted at spawn and bite events, so it read as a fast status widget rather than a sustained view into the pasture. Its terminal group also hugged the left edge of the camera region.",
+        "candidate_change": "Reuse the exact pasture group and duplicate field sheep with their existing movement, pose, head, growth, energy, lifecycle, and ear-tag tracks inside one 190x40 crop at 1.55x. Rank active identities by remaining lifetime plus nearby flock context, hold a bounded hero set through collection, follow actual movement with restrained horizontal reframes, and blank HUD plus footprints during a 0.55-source-second pan before the next hero arrives. Centre the terminal UFO and copy at x=113 within the left x=12..214 region on one grid-aligned level-0 merge.",
+        "discovery_evidence": "The renderer already owns exact field keyframes, sheep DOM, pasture cells, selected fullness, and map attribution. Reusing those tracks removes the decorative camera actor and needs no dependency, new simulation, new effect, or full-speed camera-follow subsystem.",
+        "reproduction": "Run npm run visual:fixture and npm run check; inspect native and 3x dark/light representative plus 10/62 hero holds, adjacent handoffs, reduced motion, and terminal; compare field-camera actor position, pose, head, and tag; verify bounded hero counts and reframes, exact ten-cell fullness, fixed map, terminal contrast, selected opacity, and 30fps/120fps field continuity; require a fresh independent Gate.",
+        "primary_metric": "At 700px the left panel reads as a sustained enlarged window into the live pasture: each hero remains visible long enough to show real travel and nearby sheep, while camera and HUD change subjects together only after collection.",
+        "prediction": "Using the exact field instead of a reconstructed selected view and cutting six representative hero shots instead of every bite will slow perceived switching without changing the global animation speed.",
+        "expected_delta": {
+          "fixture_bytes": 1975600,
+          "fixture_runtime_seconds": 44.863,
+          "camera_width": 190,
+          "camera_height": 40,
+          "camera_scale": 1.55,
+          "representative_heroes": 6,
+          "representative_reframes": 24,
+          "representative_bites": 201,
+          "hero_handoff_source_seconds": 0.55,
+          "new_dependencies": 0
+        },
+        "falsification_condition": "Reject if the camera does not reuse exact field sheep and pasture tracks; cuts at bite speed; loses the hero while its HUD is visible; reveals mismatched identity, pose, or tag; hides nearby useful context; places the completion group outside the left-region centre or obscures its copy; restores roster geometry; or regresses accepted motion, map, meter, panel, fence, theme, finale, size, runtime, and continuity checks.",
+        "regression_check": "npm run check plus a fresh independent visual Gate over live field identity and pose matching, hero selection and holds, handoff synchronization, terminal centring and contrast, dark/light 10/28/62 density, reduced motion, map, meter, selected opacity, and 30fps/120fps field continuity.",
+        "transfer_check": "Not applicable; this is a project-specific panel rendering correction.",
+        "guardrails": [
+          "Reuse exact pasture and field-sheep tracks; do not invent a second actor system",
+          "Hold each hero until collection and keep representative cuts far below recorded bite count",
+          "Keep HUD and footprints blank until the camera reaches the next hero",
+          "Keep the fixed map, ten-cell fullness, themes, field motion, and finale unchanged",
+          "Use one borderless grid-aligned terminal contrast merge; add no card frame or effect layer",
+          "Add no dependency and publish only after explicit approval"
+        ],
+        "permission_delta": [],
+        "rollback": "Restore the accepted v48 82x34 selected crop and left-aligned terminal group while retaining the fixed bite map and ten-cell fullness."
       }
     ],
     "promotions": [
@@ -1740,6 +2643,201 @@
           "metric": "Fresh 700px adjacent opening and lifecycle frames plus deterministic spawn-anchor, visible-flight, identity, arrival-light, causal, route, roster, theme, reduced-motion, finale, size, and runtime checks",
           "rollback_threshold": "Roll back if any sheep reveals outside its exact drop, an exchange UFO disappears or coordinate-teleports, fewer than multiple intermediate flight frames remain visible at 60fps, incoming identity or zero energy is absent before flight, the benchmark falls below 16/20, any dimension falls below 3, runtime exceeds 50 seconds, or npm run check fails.",
           "evidence": "A fresh Gate that did not author v29 scored it 20/20 with no blocker. The 1,230,931-byte, 48.581-second fixture contains six exact opening spawn anchors, 22 visible 0.104-second turnover flights with streak and arrival-light pairs, zero UFO opacity cuts or coordinate teleports, 22 preflight INBOUND handoffs, and exact remote-drop replacement reveals. Opening sheep 3 and 4 stay absent until the UFO stops at their destinations; first, later maximum-distance, and final exchanges show multiple physical UFO positions, no sheep in flight, clean white incoming actors, shared stopped holds, and cleared adjacent bridges. All 201 arrivals/pulses, exact 0.312-second bridge edges, serialized stops, endpoint separation, early final pickup, 10/28/62 rosters, both themes, reduced motion, terminal state, and 53 finale phases pass. Feature 977b065 and successful workflow 32085064689 published project asset ccfc73f plus profile asset cae1d93 and embed c322968; profile README prose 12241ec describes the speed exchange. Project/profile theme files match byte-for-byte, and the public 10-member dark SVG is 599,943 bytes, 39.884 seconds, with six INBOUND handoffs and no ufo-visibility cut."
+        }
+      },
+      {
+        "id": "promotion-visible-edge-blink-flight-v31-20260818",
+        "proposal_id": "proposal-visible-edge-blink-flight-v31",
+        "gate_agent": "gate",
+        "before": "V30 mixed hidden point jumps for opening deployment and turnover with visible travel for collection, convergence, and exit. The whole moving UFO group disappeared during hidden jumps, removing the green direction cue, and opening sheep could start walking before the carrier departed.",
+        "after": "V31 routes entry, deployment, turnover, collection, finale convergence, and exit through one visible-edge blink grammar: at most 12 pixels of readable travel at each end, the original green light carrying the body-hidden middle, an exact stop, and sheep held at their exact drop until carrier departure.",
+        "regressions_passed": true,
+        "decision": "accepted",
+        "live_cycle": {
+          "status": "observed",
+          "metric": "Fresh 700px adjacent lifecycle frames across first entry, opening deployment, first/later/final turnover, collection, finale convergence, exit, both themes, reduced motion, and 10/28/62 rosters plus deterministic causal, route, size, and runtime checks",
+          "rollback_threshold": "Roll back if any UFO leg exposes the body through the middle, loses the green cue, exceeds 12 visible pixels at either edge, fails to approach or stop exactly, moves an opening sheep before carrier departure, reveals a sheep off-drop or in flight, scores below 16/20 or below 3 in any Gate dimension, exceeds 50 seconds, or npm run check fails.",
+          "evidence": "A fresh Gate that did not author v31 scored it 20/20 with no blocker. The 1,273,474-byte, 44.122-second fixture shows the first entry, opening deployments, all 22 turnover exchanges, early collection, finale convergence, and final exit using the same bounded-edge, body-hidden green-middle motion. Sheep 3 and 4 reveal and remain at their exact drops until carrier departure; replacements switch to INBOUND before travel and appear only beneath the stopped UFO. All 201 causal arrivals, 50 serialized stops, exact replacement bridges, 10/28/62 rosters, both themes, reduced motion, terminal state, and 53 finale phases pass, with no flower, wobble, banking, filter, blur, invalid SVG value, or new asset."
+        }
+      },
+      {
+        "id": "promotion-unified-hidden-flash-jump-v30-20260818",
+        "proposal_id": "proposal-unified-hidden-flash-jump-v30",
+        "gate_agent": "gate",
+        "before": "The published v29 UFO slid in from above for the first deployment and exposed intermediate carrier positions during opening and turnover travel, so exact-cell sheep reveals could still feel like offscreen delivery.",
+        "after": "The accepted v30 UFO stays hidden at the exact first drop until its flash, holds at each deployment stop before one hidden 0.052-second jump, and hides through each 0.104-second turnover exchange. UFO and sheep bodies appear only at exact destinations with the existing arrival light.",
+        "regressions_passed": true,
+        "decision": "accepted",
+        "live_cycle": {
+          "status": "observed",
+          "metric": "Fresh 700px adjacent first-entry, opening-drop, and turnover lifecycle frames plus deterministic hidden-window, destination-light, exact-anchor, causal, route, roster, theme, reduced-motion, finale, size, and runtime checks",
+          "rollback_threshold": "Roll back if the first UFO slides from outside, an opening or turnover jump exposes an intermediate UFO or sheep body, a destination flash or exact-drop reveal is missing, the benchmark falls below 16/20, any dimension falls below 3, runtime exceeds 50 seconds, or npm run check fails.",
+          "evidence": "A fresh Gate that did not author v30 scored it 20/20 with no blocker. The 1,229,601-byte, 48.581-second fixture keeps the first UFO absent until the 0.832-second exact-drop flash, hides opening jumps 2–6 for exactly 0.052 playback seconds, reveals sheep 3 and 4 only at 2.938 and 4.004 seconds, and hides all 22 turnover jumps for exactly 0.104 seconds. First, maximum-distance, and final exchanges preserve pre-jump INBOUND 0/20, destination light, clean white replacements, stopped holds, and cleared adjacent bridges with no intermediate UFO or sheep body. All 201 arrivals, exact 0.312-second bridge edges, serialized stops, endpoint separation, early final pickup, 10/28/62 rosters, both themes, reduced motion, terminal state, and 53 finale phases pass. Feature 8ea8215 and successful workflow 32086601719 published project asset 6f8af55 plus profile asset f4e30db and embed 0094973; profile README prose 32ef11e describes the hidden jump. Project/profile theme files match byte-for-byte, and the public 10-member dark SVG is 583,478 bytes, 35.204 seconds, with six INBOUND handoffs."
+        }
+      },
+      {
+        "id": "promotion-independent-roster-fixed-rhythm-v32-20260818",
+        "proposal_id": "proposal-independent-roster-fixed-rhythm-v32",
+        "gate_agent": "gate",
+        "before": "V31 reused one animated field-slot SVG across successive roster identities, parked hidden sheep at an offscreen coordinate, let incoming bridge motion begin while the UFO body was still departing, and used unequal playback durations for otherwise shared UFO phases.",
+        "after": "V32 renders one lifecycle actor per roster identity, anchors every hidden and first-visible sheep transform to its exact drop, waits until the departing UFO body is hidden before walking, and routes every UFO leg through one fixed 0.182-second blink with at most 8 pixels of visible endpoint motion.",
+        "regressions_passed": true,
+        "decision": "accepted",
+        "live_cycle": {
+          "status": "observed",
+          "metric": "Fresh 700px lifecycle frames plus independent 30fps and 120fps first-reveal probes across all roster actors, themes, reduced motion, roster densities, finale, and deterministic causal, route, size, and runtime checks",
+          "rollback_threshold": "Roll back if any roster identity reuses another identity's actor, any hidden sheep uses an offscreen coordinate, a first reveal occurs outside or moves into its assigned drop, a sheep moves before the departing UFO body is hidden, any UFO leg loses the fixed rhythm or exposes cross-field body travel, the Gate score falls below 16/20 or below 3 in any dimension, runtime exceeds 50 seconds, or npm run check fails.",
+          "evidence": "A fresh Gate that did not author v32 scored it 20/20 with no blocker. The 1,336,713-byte, 44.863-second fixture contains 28 unique roster actors and zero offscreen transforms; independent browser probes found all 28 first appearances with zero outside or unstable results at both 30fps and 120fps. Entry, opening deployments, all 22 turnovers, early collection, finale convergence, and exit use the same 0.182-second rhythm and maximum-8px visible edges. Incoming sheep appear only at exact remote drops, remain fixed until the carrier body is hidden, and retain distinct INBOUND identity. All 201 causal arrivals, 50 stops, exact replacement bridges, 10/28/62 rosters, both themes, reduced motion, terminal state, and 53 finale phases pass, with no flower, wobble, banking, filter, blur, invalid SVG value, new asset, or permission expansion."
+        }
+      },
+      {
+        "id": "promotion-turnover-boundary-continuity-v33-20260818",
+        "proposal_id": "proposal-turnover-boundary-continuity-v33",
+        "gate_agent": "gate",
+        "before": "V32 could reveal an incoming sheep at the exact drop and then replay the outgoing actor's delayed historyIndex pickup coordinate before returning toward the cleared bridge.",
+        "after": "V33 excludes the shared outgoing boundary frame from incoming movement and pose tracks and deterministically rejects stale, non-adjacent, or unplanned pre-bridge coordinates.",
+        "regressions_passed": true,
+        "decision": "accepted",
+        "live_cycle": {
+          "status": "observed",
+          "metric": "Fresh exact 700px SHEEP 06/07 frames plus 1.6-second 30fps and 120fps browser probes for every incoming actor in representative 28- and 10-roster SVGs",
+          "rollback_threshold": "Roll back if any incoming actor revisits an outgoing pickup coordinate, reveals outside its drop, jumps non-adjacently, moves before the UFO body is hidden, or if any accepted causal, route, roster, theme, finale, size, or runtime check fails.",
+          "evidence": "A fresh Gate that did not author v33 scored it 20/20 with no blocker. All 22 representative incoming actors and all six 10-roster incoming actors had zero stale coordinates, outside reveals, non-adjacent jumps, velocity spikes, or movement before an opacity-zero UFO boundary during 1.6-second 30fps and 120fps probes. SHEEP 06 and SHEEP 07 held exact drops and entered only their first adjacent bridge cells in both themes. The 1,336,351-byte, 44.863-second fixture preserves all 201 arrivals and pulses, 22 replacements, 50 stops, 83 exact 0.312-second bridge edges, early pickup, 10/28/62 layouts, reduced motion, terminal state, and 53 finale phases. Feature 8059a81 and successful workflow 32097810199 published project assets in 48d1b46, profile assets in 6d707c5, and the immutable profile embed in 3c4212e; all three public project/profile SVG hashes match byte-for-byte."
+        }
+      },
+      {
+        "id": "promotion-ranch-tag-relay-v35-20260818",
+        "proposal_id": "proposal-ranch-tag-relay-v35",
+        "gate_agent": "gate",
+        "before": "The fast v34 handoff used simultaneous 수거/출동 cards and a completion label, but the short exchange left little time to read them and did not carry one memorable sheep identity across field, selected portrait, and roster.",
+        "after": "V35 gives every sheep one persistent 3x3 ranch tag, cues the next roster slot before pickup, leaves an exact empty beat after the outgoing identity disappears, and reveals the hungry tagged identity before its exact remote drop.",
+        "regressions_passed": true,
+        "decision": "accepted",
+        "live_cycle": {
+          "status": "observed",
+          "metric": "Fresh 700px dark/light cue, pickup, blank, incoming, and exact-drop frames plus 10/28/62 layouts and 30fps/120fps continuity probes",
+          "rollback_threshold": "Roll back if field, selected, and roster tags mismatch; the next cue or blank handoff disappears; any fallback sheep fills the gap; dense tags clip; an incoming actor slides or jumps; replacement text cards return; or any accepted causal, motion, theme, finale, size, or runtime check fails.",
+          "evidence": "A fresh independent Gate scored v35 20/20 with no blocker. At the first turnover the next slot cues 0.702 playback seconds before pickup, tagged sheep 01 reaches 20/20, the selected region is completely empty for exactly 0.104 seconds with FIELD 5/6, tagged sheep 07 appears at 0/20 before the remote drop, and the same tag appears on its exact-drop field actor. Capacity is 492 with the first 300 tags unique and all 28 representative field/selected/roster mappings identical. All 22 cue/handoffs pass. Fresh 30fps/120fps probes found zero stale coordinates, outside reveals, non-adjacent jumps, velocity spikes, or movement before UFO hide across all 22 representative and six 10-roster incoming actors. The 1,851,823-byte, 44.863-second fixture preserves 201 arrivals and pulses, 50 stops, exact bridge timing, early pickup, dark/light 10/28/62 layouts, reduced motion, terminal state, and 53 finale phases. Feature 6886ea8 and successful workflow 32107648450 published project assets in 0496aa0, profile assets in 7f59feb, immutable profile embeds in cd2fd6b, and profile prose in 6115be4; all three public project/profile SVG hashes match byte-for-byte."
+        }
+      },
+      {
+        "id": "promotion-simple-color-tag-panel-v36-20260818",
+        "proposal_id": "proposal-simple-color-tag-panel-v36",
+        "gate_agent": "gate",
+        "before": "V35 used a dense 3x3 bit tag plus a compact fullness meter in every roster slot, kept the three status cells over the right region, and timed selected visibility linearly even though sheep lifecycle changes are discrete.",
+        "after": "V36 uses one shared contribution-color square plus the roster number, keeps fullness only in the selected region, spans the status row across the full panel, distributes square roster cells from x=212 to x=650, and snaps selected visibility without changing the v35 handoff.",
+        "regressions_passed": true,
+        "decision": "accepted",
+        "live_cycle": {
+          "status": "observed",
+          "metric": "Fresh 700px dark/light and reduced-motion turnover frames, 10/28/62 panel layouts, selected-opacity boundary sampling, and 30fps/120fps incoming continuity",
+          "rollback_threshold": "Roll back if a tag is not one square or shared across field, selected, and roster; four contribution colors disappear; selected opacity becomes gradual; fullness is duplicated in roster cells; status or roster endpoints lose their full-width spacing; the next-slot cue or blank handoff changes; dense cells clip; continuity fails; or any accepted causal, motion, theme, finale, size, or runtime check fails.",
+          "evidence": "A fresh independent Gate scored v36 20/20 with no blocker. Forced dark/light and reduced-motion 700px frames show one-square tags across four contribution colors, the equal x=10–650 방목·양떼·잔디 row, selected sheep/tag/number/fullness spacing, and square 10/28/62 two-row rosters from x=212 to x=650 without compact meters or clipping. The v35 cue, exact 0.104-second blank handoff, incoming selection, exact-drop actor, and terminal state remain. A browser probe found zero intermediate opacity across 1,970 selected-boundary samples. Fresh 30fps/120fps probes found zero stale coordinates, outside reveals, non-adjacent jumps, velocity spikes, or movement before UFO hide across all 22 representative and six 10-roster incoming actors. The 1,780,059-byte, 44.863-second fixture preserves all accepted causal, timing, reduced-motion, and finale checks."
+        }
+      },
+      {
+        "id": "promotion-ear-tag-roster-fullness-v37-20260818",
+        "proposal_id": "proposal-ear-tag-roster-fullness-v37",
+        "gate_agent": "gate",
+        "before": "V36 placed the field identity square on the wool and kept every numbered roster square visually static after removing compact per-slot meters.",
+        "after": "V37 attaches the same 1x1 contribution-color square at the field and selected sheep's left ear and fills each numbered roster square from its existing recorded-bite clip without restoring duplicate meters.",
+        "regressions_passed": true,
+        "decision": "accepted",
+        "live_cycle": {
+          "status": "observed",
+          "metric": "Fresh 3x and 700px dark/light plus reduced-motion ear attachment, 10/28/62 bite-driven square fullness, selected-opacity boundaries, and 30fps/120fps incoming continuity",
+          "rollback_threshold": "Roll back if the tag returns to wool, separates from the head pose, or becomes unreadable; square fullness hides identity or stops following bites; compact per-slot meters return; v36 spacing changes; handoff continuity fails; or any accepted causal, motion, theme, finale, size, or runtime check fails.",
+          "evidence": "A fresh independent Gate scored v37 20/20 with no blocker. Fresh 3x and 700px forced dark/light plus reduced-motion frames show the 1x1 mark at the left ear rather than the body and progressive fill inside numbered 10/28/62 roster squares without hiding number or identity color. The full-width header, selected ten-cell meter, next-slot cue, exact blank handoff, exact-drop field actors, and terminal state remain. Selected opacity has zero intermediate values across 1,970 samples; 30fps/120fps probes report zero outside reveals, non-adjacent jumps, velocity spikes, or movement before UFO hide across all 22 representative and six 10-roster incoming actors. The 1,790,045-byte fixture remains 44.863 seconds."
+        }
+      },
+      {
+        "id": "promotion-cardless-focus-roster-v45-20260819",
+        "proposal_id": "proposal-cardless-focus-roster-v45",
+        "gate_agent": "gate",
+        "before": "Every roster identity appeared as a bordered miniature card with a permanent number and stacked full-box state outlines.",
+        "after": "Normal identities are borderless pasture cells with horizontal fullness and a 2px identity corner; only the focused sheep shows one centered number and external four-corner cursor, while compact lines carry transient states.",
+        "regressions_passed": true,
+        "decision": "accepted",
+        "live_cycle": {
+          "status": "observed",
+          "metric": "Native 700x212 dark/light cardless 10/28/62 roster, single focus number/cursor, grid alignment, horizontal fullness, compact state marks, identity mapping, handoff, reduced motion, terminal state, selected opacity, and reveal continuity",
+          "rollback_threshold": "Roll back if normal roster cells regain a border, permanent number, or full-box outline; focus shows zero or multiple numbers/cursors; the 2px identity marker collides; cells overlap or leave the panel grid; or any accepted fullness, panel, fence, health, motion, theme, finale, size, or runtime check fails.",
+          "evidence": "A fresh independent Gate scored v45 20/20 with no blocker. Native and 3x dark/light 10/28/62 frames show borderless 10x10 rx2 cells aligned at x=216+12n with endpoints 216–646 and two rows. Only focus displays a number and separated corner cursor; a 60fps probe found maxNumbers=1, maxCursors=1, and zero failures across 2,692 samples, while terminal exposes neither. Identity mapping, horizontal partial fullness, ready/active/extracting/collected marks, v44 panel/fence, v43 gauge, handoff, reduced motion, and finale pass. Selected opacity and 30fps/120fps continuity report zero failures. npm run check and git diff --check pass; the fixture is 1,809,731 bytes and 44.863 seconds."
+        }
+      },
+      {
+        "id": "promotion-unified-panel-grid-v44-20260819",
+        "proposal_id": "proposal-unified-panel-grid-v44",
+        "gate_agent": "gate",
+        "before": "The panel fence ended on a half-tile 66px row with oversized lower-corner gaps, while an 8px translucent pattern and opaque free-form cards made the panel look detached from the pasture.",
+        "after": "The panel uses the pasture's exact 53-column cell surface and inset, closes its fence on the aligned 72px row, and forms status, selected, and fullness regions by merging grid-aligned cells without borders.",
+        "regressions_passed": true,
+        "decision": "accepted",
+        "live_cycle": {
+          "status": "observed",
+          "metric": "Native 700x212 dark/light shared-grid geometry, regular lower-corner fence rhythm, borderless merged regions, five-block health states, 10/28/62 roster, handoff, reduced motion, terminal state, selected opacity, and reveal continuity",
+          "rollback_threshold": "Roll back if the lower corners regain an oversized gap; panel pitch, inset, rounded cells, or palette diverges from the pasture; merged regions float off-grid or become nested cards; or the accepted health gauge, roster, header, motion, theme, finale, size, or runtime checks fail.",
+          "evidence": "A fresh independent Gate scored v44 20/20 with no blocker. The panel pattern is x=12 with 12px pitch, 10px rx2 level-0 cells, 53x5 extent, and no opacity; the aligned fence uses vertical origins 0 through 72 in 12px steps. Borderless status spans are 18/17/18 columns and selected/fullness spans are 8/9 columns. Native dark/light representative, 10, 62, handoff, reduced, and terminal frames are unclipped at 700x212. The v43 0/4/18/20 five-block gauge remains readable. Selected opacity has zero failures across 1,970 samples; representative and 10-roster 30fps/120fps probes report zero failures. npm run check and git diff --check pass; the fixture is 1,807,628 bytes and 44.863 seconds."
+        }
+      },
+      {
+        "id": "promotion-selected-health-bar-v43-20260819",
+        "proposal_id": "proposal-selected-health-bar-v43",
+        "gate_agent": "gate",
+        "before": "The selected sheep's ten narrow contribution cells read as another data grid rather than the chunky character-health gauge in the user's reference.",
+        "after": "The selected stat uses five broad horizontal blocks inside one restrained shell, preserves exact 포만 n/20 and the adjacent identity swatch, and exposes partial final-block fill through the existing bite-driven clip.",
+        "regressions_passed": true,
+        "decision": "accepted",
+        "live_cycle": {
+          "status": "observed",
+          "metric": "Native 700px dark/light 0/20, 4/20, 18/20, and 20/20 health states plus unchanged 10/28/62 roster, header, handoff, reduced motion, terminal state, selected opacity, and reveal continuity",
+          "rollback_threshold": "Roll back if selected fullness stops reading as five broad horizontal health blocks; the final block cannot show partial fill; exact text or identity swatch collides; a secondary bar appears; or any accepted roster, header, motion, theme, finale, size, or runtime check fails.",
+          "evidence": "A fresh independent Gate scored v43 20/20 with no blocker. Native 700px dark/light frames show 0/20 empty, 4/20 one full block, 18/20 four full plus a partial fifth, and 20/20 five full blocks with no text or swatch collision. The 10/28/62 square rosters, full-width header, reduced motion, handoff, and terminal state remain unchanged. Selected opacity has zero intermediate values across 1,970 samples; representative and 10-roster 30fps/120fps probes report zero failures. npm run check and git diff --check pass; the fixture is 1,807,718 bytes and 44.863 seconds."
+        }
+      },
+      {
+        "id": "promotion-clean-square-roster-corner-tags-v42-20260818",
+        "proposal_id": "proposal-clean-square-roster-corner-tags-v42",
+        "gate_agent": "gate",
+        "before": "V38–v40 replaced the accepted square roster with cramped per-roster strips, and the first rollback attempt let varied identity hues dominate whole roster squares.",
+        "after": "V42 restores the clean green square two-row roster and original selected horizontal ten-cell meter, keeps every fullness fill left to right, and limits each distinct identity hue to the sheep's ear, the selected-meter swatch, and a small matching top-right roster marker.",
+        "regressions_passed": true,
+        "decision": "accepted",
+        "live_cycle": {
+          "status": "observed",
+          "metric": "Native 700px and 3x dark/light 10/28/62 square-grid hierarchy, left-to-right selected and roster fullness, marker mapping and corner geometry, reduced motion, selected-opacity boundaries, and 30fps/120fps incoming continuity",
+          "rollback_threshold": "Roll back if the selected meter stops being ten horizontal cells; a roster card stops being square or filling left to right; identity hue fills a whole roster surface, leaves the ear, mismatches the selected swatch or top-right marker, overlaps a number, or repeats within the reachable roster; the status row changes; x=212–650 spacing clips; or any accepted handoff, motion, theme, finale, size, or runtime check fails.",
+          "evidence": "A fresh independent Gate scored v42 20/20 with no blocker. Native 700px dark/light 10/28/62 and 3x frames show the unchanged full-width status row, original selected 포만 n/20 plus ten horizontal cells, green numbered square roster fill from left to right, and unique HSL identity limited to the field/selected ear, selected-meter swatch, and each square's top-right marker. All endpoints remain x=212–650 without clipping or number collision. Reduced-motion and terminal frames pass; selected opacity has zero intermediate values across 1,970 samples; 30fps/120fps probes report zero failures for all 22 representative and six 10-roster incoming actors. npm run check and git diff --check pass; the fixture is 1,803,485 bytes and 44.863 seconds."
+        }
+      },
+      {
+        "id": "promotion-tracking-pasture-map-v48-20260819",
+        "proposal_id": "proposal-tracking-pasture-map-v48",
+        "gate_agent": "gate",
+        "before": "The lower panel used per-identity roster cells and a selected surface whose identity changed without spatial context.",
+        "after": "The roster is gone; a fixed bite map accumulates real spatial activity, the selected sheep sits in an actual-grid tracking camera, ten cells show fullness, and two tiny current-identity footprints attribute past bites.",
+        "regressions_passed": true,
+        "decision": "accepted",
+        "live_cycle": {
+          "status": "observed",
+          "metric": "Native 700x212 dark/light and reduced 10/28/62 camera tracking, ten-cell fullness, fixed 36x4 bite map, current-only footprints, handoff, terminal cleanup, selected opacity, and reveal continuity",
+          "rollback_threshold": "Roll back if the crop stops matching the actual source grid or target cells; the selected sheep leaves camera centre; a roster returns; the map loses contribution-green hierarchy; footprints expose another sheep, a future bite, or terminal state; or accepted motion, panel, fence, theme, finale, size, runtime, and continuity checks fail.",
+          "evidence": "A fresh independent Gate scored v48 20/20 with no blocker. Native and 3x dark/light representative plus 10/62 frames show an 82x34 actual-grid crop, centered 30x25 sheep, exact ten-cell fullness, fixed 36x4 map, one latest-bite cursor, and subtle matching-hue two-dot footprints only for the current selected sheep's past bites. Reduced motion applies step-end camera movement and hides pulses; handoff adjacent frames are clean; terminal keeps map history but removes camera, selected content, pulse, and footprints. Selected opacity has zero failures across 1,970 samples. Representative incoming22 and 10-member incoming6 30fps/120fps probes report zero missing, outside, non-adjacent, velocity-spike, or early-move failures. npm run visual:fixture, npm run check, and git diff --check pass; the fixture is 1,991,724 bytes and 44.863 seconds."
+        }
+      },
+      {
+        "id": "promotion-live-hero-camera-v49-20260819",
+        "proposal_id": "proposal-live-hero-camera-v49",
+        "gate_agent": "gate",
+        "before": "The selected panel reconstructed one sheep over an actual-grid crop and retargeted at spawn and bite events, producing fast subject changes; terminal completion remained left-aligned.",
+        "after": "The left panel is a 1.55x live view of the exact running field, six representative heroes remain through collection with restrained route reframes and synchronized handoffs, and the final UFO plus completion copy is centred at x=113 within the left 202px region on a grid-aligned contrast merge.",
+        "regressions_passed": true,
+        "decision": "accepted",
+        "live_cycle": {
+          "status": "observed",
+          "metric": "Native 700x212 dark/light representative plus 10/62 live-field heroes, field-camera identity and pose parity, 0.55-source-second blank-HUD handoffs, reduced motion, left-region terminal centring and contrast, fixed map, ten-cell fullness, selected opacity, and field continuity",
+          "rollback_threshold": "Roll back if camera sheep or pasture diverge from the field; hero shots cut at bite speed; HUD appears without its framed sheep; terminal copy leaves the x=113 left-region centre or loses contrast; a roster or decorative actor returns; or accepted motion, map, meter, panel, fence, theme, finale, size, runtime, and continuity checks fail.",
+          "evidence": "A fresh independent Gate scored v49 20/20 with no blocker. Native and 3x dark/light representative plus 10/62 frames show the exact pasture and field sheep at 1.55x inside a 190x40 crop. Field-camera movement, pose, head, and tag comparisons report zero mismatches across 252 paired samples. Representative heroes 0,4,7,13,15,22 remain through collection and use 24 reframes across 201 bites. First and second adjacent handoff frames keep HUD and footprints blank through 0.55 source seconds, then reveal the framed hero and exact fullness together at 4683ms and 10611ms. The terminal UFO and two lines are centred at x=113 inside the left x=12..214 region and isolated from map marks by one grid-aligned level-0 merge. Reduced motion, map, ten-cell meter, terminal cleanup, selected opacity, and 30fps/120fps field continuity remain green. npm run visual:fixture, npm run check, and git diff --check pass; the fixture is 1,975,600 bytes and 44.863 seconds."
         }
       }
     ],
